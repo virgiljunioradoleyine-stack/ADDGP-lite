@@ -1,0 +1,24 @@
+{
+  "name": "addgp-lite",
+  "version": "1.0.0",
+  "description": "BYOK compliance CLI - local, sovereign, zero-margin",
+  "private": true,
+  "type": "module",
+  "module": "src/cli/main.ts",
+  "scripts": {
+    "embed": "bun run scripts/embed.ts",
+    "build": "bun run scripts/embed.ts && bun run scripts/build.ts",
+    "release": "bun run scripts/embed.ts && bun run scripts/release.ts",
+    "test": "bun run scripts/embed.ts && bun test",
+    "typecheck": "bun run scripts/embed.ts && tsc --noEmit",
+    "dev": "bun run src/cli/main.ts"
+  },
+  "dependencies": {
+    "yaml": "2.6.1",
+    "zod": "3.24.1"
+  },
+  "devDependencies": {
+    "@types/bun": "1.1.14",
+    "typescript": "5.7.2"
+  }
+}
