@@ -18,11 +18,23 @@ export const BRAND = {
   disclaimerShort: "This is an engineering artifact, not legal advice.",
 } as const;
 
-/** The only three hosts this tool may ever contact. Enforced by the egress gate. */
-export const PINNED_HOSTS = [
-  "api.perplexity.ai",
-  "api.openai.com",
-  "api.anthropic.com",
-] as const;
+/**
+ * The only host this tool may ever contact. Enforced by the egress gate.
+ *
+ * All three model seats are reached through OpenRouter on a single key, so the
+ * user signs up once and pays one vendor. That also narrows the egress surface
+ * to exactly one hostname — anything else is a bug and is blocked.
+ */
+export const PINNED_HOSTS = ["openrouter.ai"] as const;
 
 export type PinnedHost = (typeof PINNED_HOSTS)[number];
+
+export const OPENROUTER = {
+  base: "https://openrouter.ai/api/v1",
+  chat: "https://openrouter.ai/api/v1/chat/completions",
+  models: "https://openrouter.ai/api/v1/models",
+  keyInfo: "https://openrouter.ai/api/v1/key",
+  /** Attribution headers OpenRouter asks integrations to send. */
+  referer: "https://github.com/addgp/addgp-lite",
+  title: "ADDGP-Lite",
+} as const;

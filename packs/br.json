@@ -1,0 +1,100 @@
+{
+  "id": "br",
+  "name": "Brazil",
+  "kind": "region",
+  "depth": "standard",
+  "currency": "BRL",
+  "regulator": {
+    "name": "Autoridade Nacional de Proteção de Dados (ANPD)",
+    "url": "https://www.gov.br/anpd/"
+  },
+  "authorities": [
+    "gov.br",
+    "planalto.gov.br",
+    "in.gov.br"
+  ],
+  "instruments": [
+    {
+      "id": "br-lgpd",
+      "name": "Lei Geral de Proteção de Dados Pessoais, Lei nº 13.709/2018 (LGPD)",
+      "type": "act",
+      "in_force": true,
+      "url": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm"
+    },
+    {
+      "id": "br-marco-civil",
+      "name": "Marco Civil da Internet, Lei nº 12.965/2014",
+      "type": "act",
+      "in_force": true,
+      "url": "https://www.planalto.gov.br/"
+    }
+  ],
+  "facet_hints": {
+    "legal_bases": "The LGPD has ten legal bases in Article 7, more than the GDPR; do not assume a one-to-one mapping.",
+    "dpo": "The LGPD requires an encarregado (DPO) with published contact details.",
+    "cross_border": "Article 33 international transfer conditions and the ANPD standard contractual clauses.",
+    "breach_notification": "Article 48 communication to the ANPD and to data subjects.",
+    "enforcement": "Search ANPD sanction decisions and guidance."
+  },
+  "seed_obligations": [
+    {
+      "id": "br-lgpd-art7",
+      "provision": "Article 7",
+      "title": "Establish one of the ten legal bases for each processing operation",
+      "facets": [
+        "personal_data"
+      ],
+      "applies_when": [
+        "processes personal data in Brazil or of individuals in Brazil"
+      ],
+      "testable_as": [
+        "a recorded basis per purpose"
+      ]
+    },
+    {
+      "id": "br-lgpd-art41",
+      "provision": "Article 41",
+      "title": "Appoint an encarregado and publish their contact details",
+      "facets": [
+        "dpo",
+        "governance"
+      ],
+      "applies_when": [
+        "is a controller under the LGPD"
+      ],
+      "testable_as": [
+        "a named encarregado",
+        "contact details published"
+      ]
+    },
+    {
+      "id": "br-lgpd-art48",
+      "provision": "Article 48",
+      "title": "Communicate security incidents to the ANPD and affected data subjects",
+      "facets": [
+        "breach_notification"
+      ],
+      "applies_when": [
+        "a security incident that may create relevant risk or damage occurs"
+      ],
+      "testable_as": [
+        "an incident runbook naming the ANPD",
+        "a breach register"
+      ]
+    },
+    {
+      "id": "br-lgpd-art33",
+      "provision": "Article 33",
+      "title": "Meet a condition for international transfer of personal data",
+      "facets": [
+        "cross_border"
+      ],
+      "applies_when": [
+        "personal data leaves Brazil"
+      ],
+      "testable_as": [
+        "a recorded transfer condition per destination"
+      ]
+    }
+  ]
+}

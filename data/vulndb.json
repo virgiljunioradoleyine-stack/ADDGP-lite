@@ -1,0 +1,192 @@
+{
+  "version": 1,
+  "generated_at": "2026-01-01",
+  "note": "Embedded advisory set for offline dependency checks. This is deliberately a small, high-signal list of widely-exploited advisories rather than a mirror of the full ecosystem databases: the binary must work with no network, and a stale full mirror would be worse than an honest partial one. Every finding it produces says which database and advisory it came from, and the report states plainly that this is not a substitute for a live SCA feed.",
+  "sources": [
+    "https://osv.dev/",
+    "https://github.com/advisories",
+    "https://nvd.nist.gov/"
+  ],
+  "advisories": [
+    {
+      "id": "GHSA-w596-4wvx-j9j6",
+      "ecosystem": "PyPI",
+      "package": "pyyaml",
+      "vulnerable": "<5.4",
+      "severity": "critical",
+      "cwe": "CWE-502",
+      "summary": "Arbitrary code execution via yaml.load without SafeLoader."
+    },
+    {
+      "id": "GHSA-8r8j-xvfj-36f9",
+      "ecosystem": "npm",
+      "package": "lodash",
+      "vulnerable": "<4.17.21",
+      "severity": "high",
+      "cwe": "CWE-1321",
+      "summary": "Prototype pollution."
+    },
+    {
+      "id": "GHSA-93q8-gq69-wqmw",
+      "ecosystem": "npm",
+      "package": "axios",
+      "vulnerable": "<0.21.2",
+      "severity": "high",
+      "cwe": "CWE-918",
+      "summary": "Server-side request forgery via redirect handling."
+    },
+    {
+      "id": "GHSA-74fj-2j2h-c42q",
+      "ecosystem": "npm",
+      "package": "minimist",
+      "vulnerable": "<1.2.6",
+      "severity": "medium",
+      "cwe": "CWE-1321",
+      "summary": "Prototype pollution."
+    },
+    {
+      "id": "GHSA-3xgq-45jj-v275",
+      "ecosystem": "npm",
+      "package": "jsonwebtoken",
+      "vulnerable": "<9.0.0",
+      "severity": "high",
+      "cwe": "CWE-327",
+      "summary": "Insecure default algorithm handling permits signature bypass in some configurations."
+    },
+    {
+      "id": "GHSA-jchw-25xp-jwwc",
+      "ecosystem": "npm",
+      "package": "follow-redirects",
+      "vulnerable": "<1.15.4",
+      "severity": "high",
+      "cwe": "CWE-200",
+      "summary": "Proxy-Authorization header leaked across hosts on redirect."
+    },
+    {
+      "id": "GHSA-p6mc-m468-83gg",
+      "ecosystem": "npm",
+      "package": "express",
+      "vulnerable": "<4.19.2",
+      "severity": "medium",
+      "cwe": "CWE-601",
+      "summary": "Open redirect in res.location."
+    },
+    {
+      "id": "GHSA-c2qf-rxjj-qqgw",
+      "ecosystem": "npm",
+      "package": "semver",
+      "vulnerable": "<7.5.2",
+      "severity": "medium",
+      "cwe": "CWE-1333",
+      "summary": "Regular expression denial of service."
+    },
+    {
+      "id": "GHSA-9wv6-86v2-598j",
+      "ecosystem": "npm",
+      "package": "path-to-regexp",
+      "vulnerable": "<1.9.0",
+      "severity": "high",
+      "cwe": "CWE-1333",
+      "summary": "Regular expression denial of service."
+    },
+    {
+      "id": "GHSA-gcx4-mw62-g8wm",
+      "ecosystem": "npm",
+      "package": "rollup",
+      "vulnerable": "<3.29.5",
+      "severity": "medium",
+      "cwe": "CWE-79",
+      "summary": "DOM clobbering leading to XSS in generated bundles."
+    },
+    {
+      "id": "GHSA-fxwm-579q-49qq",
+      "ecosystem": "npm",
+      "package": "next",
+      "vulnerable": "<14.1.1",
+      "severity": "high",
+      "cwe": "CWE-284",
+      "summary": "Server actions authorisation bypass."
+    },
+    {
+      "id": "GHSA-7gfc-8cq8-jh5f",
+      "ecosystem": "npm",
+      "package": "next",
+      "vulnerable": "<13.5.7",
+      "severity": "medium",
+      "cwe": "CWE-400",
+      "summary": "Denial of service via image optimisation."
+    },
+    {
+      "id": "GHSA-9c47-m6qq-7p4h",
+      "ecosystem": "PyPI",
+      "package": "jinja2",
+      "vulnerable": "<3.1.3",
+      "severity": "medium",
+      "cwe": "CWE-79",
+      "summary": "Cross-site scripting via xmlattr filter."
+    },
+    {
+      "id": "GHSA-h4gh-qq45-vh27",
+      "ecosystem": "PyPI",
+      "package": "requests",
+      "vulnerable": "<2.32.0",
+      "severity": "medium",
+      "cwe": "CWE-200",
+      "summary": "Certificate verification bypass when using a session with verify=False previously set."
+    },
+    {
+      "id": "GHSA-h5c8-rqwp-cp95",
+      "ecosystem": "PyPI",
+      "package": "django",
+      "vulnerable": "<4.2.11",
+      "severity": "high",
+      "cwe": "CWE-1333",
+      "summary": "Denial of service in intcomma and related filters."
+    },
+    {
+      "id": "GHSA-m87m-mmvp-v9qm",
+      "ecosystem": "PyPI",
+      "package": "cryptography",
+      "vulnerable": "<42.0.4",
+      "severity": "medium",
+      "cwe": "CWE-476",
+      "summary": "NULL pointer dereference in PKCS7 handling."
+    },
+    {
+      "id": "GHSA-2jv5-9r88-3w3p",
+      "ecosystem": "PyPI",
+      "package": "flask",
+      "vulnerable": "<2.2.5",
+      "severity": "high",
+      "cwe": "CWE-539",
+      "summary": "Session cookie may be cached by a proxy."
+    },
+    {
+      "id": "GHSA-8qvm-5x2c-j2w7",
+      "ecosystem": "PyPI",
+      "package": "pillow",
+      "vulnerable": "<10.2.0",
+      "severity": "high",
+      "cwe": "CWE-190",
+      "summary": "Buffer overflow in image handling."
+    },
+    {
+      "id": "GHSA-hrpp-h998-j3pp",
+      "ecosystem": "npm",
+      "package": "qs",
+      "vulnerable": "<6.10.3",
+      "severity": "high",
+      "cwe": "CWE-1321",
+      "summary": "Prototype pollution via nested query parameters."
+    },
+    {
+      "id": "GHSA-4q6p-r6v2-jvc5",
+      "ecosystem": "npm",
+      "package": "@supabase/supabase-js",
+      "vulnerable": "<2.0.0",
+      "severity": "medium",
+      "cwe": "CWE-200",
+      "summary": "Legacy major version; upgrade for current auth and RLS behaviour."
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "au-malabo",
+  "name": "African Union — Malabo Convention",
+  "kind": "region",
+  "depth": "standard",
+  "currency": "USD",
+  "regulator": {
+    "name": "African Union Commission; national authorities of ratifying states",
+    "url": "https://au.int/"
+  },
+  "authorities": [
+    "au.int",
+    "achpr.org",
+    "smart-africa.org"
+  ],
+  "instruments": [
+    {
+      "id": "au-malabo-2014",
+      "name": "African Union Convention on Cyber Security and Personal Data Protection (Malabo Convention, 2014)",
+      "type": "treaty",
+      "in_force": true,
+      "url": "https://au.int/en/treaties/african-union-convention-cyber-security-and-personal-data-protection"
+    },
+    {
+      "id": "au-data-policy-framework",
+      "name": "African Union Data Policy Framework (2022)",
+      "type": "guidance",
+      "in_force": true,
+      "url": "https://au.int/"
+    }
+  ],
+  "facet_hints": {
+    "ratification": "The Malabo Convention binds states, not companies, and only those that have ratified it. Its practical effect on a developer is indirect: it shapes national law. Report it as context and as a signal of where national regimes are heading, never as a directly enforceable obligation against a codebase.",
+    "harmonisation": "Useful for a product operating across several African markets: it indicates the direction of travel for data protection authorities, cross-border transfer rules and cybersecurity duties."
+  },
+  "seed_obligations": [
+    {
+      "id": "au-malabo-context",
+      "provision": "Convention scope",
+      "title": "Understand the Convention as a driver of national law, not as a direct obligation",
+      "facets": [
+        "governance"
+      ],
+      "applies_when": [
+        "operates across multiple African markets"
+      ],
+      "testable_as": [
+        "awareness of which operating countries have ratified and what national law implements it"
+      ],
+      "note": "This pack must not generate a gap on its own. It exists to give continental context to the national packs."
+    }
+  ],
+  "notes": "Advisory pack. Obligations here are contextual; a gap should only ever be raised through a national regime."
+}

@@ -1,0 +1,80 @@
+{
+  "id": "iso-42001",
+  "name": "ISO/IEC 42001:2023 — AI management system",
+  "kind": "framework",
+  "depth": "standard",
+  "currency": "USD",
+  "regulator": {
+    "name": "ISO/IEC",
+    "url": "https://www.iso.org/"
+  },
+  "authorities": [
+    "iso.org",
+    "iec.ch"
+  ],
+  "instruments": [
+    {
+      "id": "iso-42001-2023",
+      "name": "ISO/IEC 42001:2023 Information technology — Artificial intelligence — Management system",
+      "type": "standard",
+      "in_force": true,
+      "url": "https://www.iso.org/standard/81230.html"
+    }
+  ],
+  "facet_hints": {
+    "nature": "42001 is a management-system standard: it asks for governance artifacts, not code properties. Map it to the presence and quality of documentation, roles, risk assessment and lifecycle controls rather than to lines of code.",
+    "ai_impact_assessment": "Annex controls include AI system impact assessment, data governance for AI, and lifecycle management.",
+    "note": "The standard text is copyrighted and not freely retrievable; cite the ISO catalogue entry and any freely published summaries, and do not fabricate clause text."
+  },
+  "seed_obligations": [
+    {
+      "id": "iso-42001-policy",
+      "provision": "AI policy and roles",
+      "title": "Maintain an AI policy with assigned responsibilities",
+      "facets": [
+        "ai_classification",
+        "governance"
+      ],
+      "applies_when": [
+        "develops or deploys AI systems"
+      ],
+      "testable_as": [
+        "an AI policy document",
+        "named accountable roles"
+      ]
+    },
+    {
+      "id": "iso-42001-impact",
+      "provision": "AI system impact assessment",
+      "title": "Assess the impact of the AI system on individuals and groups",
+      "facets": [
+        "ai_classification",
+        "dpia"
+      ],
+      "applies_when": [
+        "deploys an AI system affecting people"
+      ],
+      "testable_as": [
+        "a documented AI impact assessment",
+        "identified affected groups and mitigations"
+      ]
+    },
+    {
+      "id": "iso-42001-data",
+      "provision": "Data governance for AI",
+      "title": "Govern the data used to develop and operate the AI system",
+      "facets": [
+        "ai_classification",
+        "personal_data"
+      ],
+      "applies_when": [
+        "trains, tunes, or grounds a model on data"
+      ],
+      "testable_as": [
+        "documented provenance of training and grounding data",
+        "a decision on whether personal data may be used",
+        "controls against personal data entering prompts and logs"
+      ]
+    }
+  ]
+}

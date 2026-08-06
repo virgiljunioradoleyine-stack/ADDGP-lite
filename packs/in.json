@@ -1,0 +1,114 @@
+{
+  "id": "in",
+  "name": "India",
+  "kind": "region",
+  "depth": "standard",
+  "currency": "INR",
+  "regulator": {
+    "name": "Data Protection Board of India (on constitution)",
+    "url": "https://www.meity.gov.in/"
+  },
+  "authorities": [
+    "meity.gov.in",
+    "egazette.gov.in",
+    "indiacode.nic.in",
+    "prsindia.org",
+    "cert-in.org.in",
+    "rbi.org.in"
+  ],
+  "instruments": [
+    {
+      "id": "in-dpdpa-2023",
+      "name": "Digital Personal Data Protection Act, 2023",
+      "type": "act",
+      "in_force": true,
+      "url": "https://www.meity.gov.in/"
+    },
+    {
+      "id": "in-it-act-2000",
+      "name": "Information Technology Act, 2000 and the SPDI Rules, 2011",
+      "type": "act",
+      "in_force": true,
+      "url": "https://www.indiacode.nic.in/"
+    },
+    {
+      "id": "in-cert-in-2022",
+      "name": "CERT-In Directions of 28 April 2022 on cyber incident reporting",
+      "type": "guidance",
+      "in_force": true,
+      "url": "https://www.cert-in.org.in/"
+    }
+  ],
+  "facet_hints": {
+    "commencement": "The DPDP Act 2023 commences in stages by notification, and the rules matter as much as the Act. Establish precisely which provisions are in force on today's date before reporting an obligation as binding — this is the single most important retrieval task in this pack.",
+    "consent_notice": "The Act is consent-forward, with an itemised notice requirement and Consent Manager machinery.",
+    "children": "Verifiable parental consent for under-18s, and a prohibition on tracking and targeted advertising directed at children.",
+    "breach_notification": "Personal data breach intimation to the Board and to affected Data Principals; note the separate and much shorter CERT-In 6-hour incident reporting direction.",
+    "enforcement": "The Act sets financial penalties in a schedule; retrieve the schedule rather than recalling figures."
+  },
+  "seed_obligations": [
+    {
+      "id": "in-dpdpa-notice",
+      "provision": "Notice and consent",
+      "title": "Give an itemised notice and obtain consent for each specified purpose",
+      "facets": [
+        "personal_data",
+        "consent_marketing"
+      ],
+      "applies_when": [
+        "processes digital personal data of Data Principals in India"
+      ],
+      "testable_as": [
+        "an itemised notice at the point of collection",
+        "consent records per purpose",
+        "a withdrawal path as easy as the grant"
+      ]
+    },
+    {
+      "id": "in-dpdpa-children",
+      "provision": "Processing of children's data",
+      "title": "Obtain verifiable parental consent and do not track or target children",
+      "facets": [
+        "children"
+      ],
+      "applies_when": [
+        "processes personal data of a person under 18"
+      ],
+      "testable_as": [
+        "age determination",
+        "verifiable parental consent",
+        "no behavioural tracking or targeted advertising for child accounts"
+      ]
+    },
+    {
+      "id": "in-dpdpa-breach",
+      "provision": "Personal data breach intimation",
+      "title": "Intimate the Board and affected Data Principals of a personal data breach",
+      "facets": [
+        "breach_notification"
+      ],
+      "applies_when": [
+        "a personal data breach occurs"
+      ],
+      "testable_as": [
+        "an incident runbook covering both the Board and CERT-In timelines"
+      ]
+    },
+    {
+      "id": "in-cert-in-6h",
+      "provision": "CERT-In Directions, 28 April 2022",
+      "title": "Report specified cyber incidents to CERT-In within six hours",
+      "facets": [
+        "breach_notification"
+      ],
+      "applies_when": [
+        "operates a service reachable from India and suffers a listed incident type"
+      ],
+      "testable_as": [
+        "a runbook with the six-hour clock",
+        "synchronised system clocks to NTP as the directions require",
+        "logs retained for the specified period"
+      ]
+    }
+  ]
+}

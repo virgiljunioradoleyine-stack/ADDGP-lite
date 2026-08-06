@@ -1,0 +1,247 @@
+{
+  "id": "eu",
+  "name": "European Union",
+  "kind": "region",
+  "depth": "standard",
+  "currency": "EUR",
+  "regulator": {
+    "name": "European Data Protection Board and national supervisory authorities",
+    "url": "https://edpb.europa.eu/"
+  },
+  "authorities": [
+    "eur-lex.europa.eu",
+    "edpb.europa.eu",
+    "edps.europa.eu",
+    "curia.europa.eu",
+    "digital-strategy.ec.europa.eu",
+    "gdprhub.eu"
+  ],
+  "instruments": [
+    {
+      "id": "eu-gdpr",
+      "name": "Regulation (EU) 2016/679 (General Data Protection Regulation)",
+      "type": "regulation",
+      "in_force": true,
+      "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj"
+    },
+    {
+      "id": "eu-ai-act",
+      "name": "Regulation (EU) 2024/1689 (Artificial Intelligence Act)",
+      "type": "regulation",
+      "in_force": true,
+      "url": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj"
+    },
+    {
+      "id": "eu-eprivacy",
+      "name": "Directive 2002/58/EC (ePrivacy Directive) as implemented nationally",
+      "type": "directive",
+      "in_force": true,
+      "url": "https://eur-lex.europa.eu/"
+    },
+    {
+      "id": "eu-nis2",
+      "name": "Directive (EU) 2022/2555 (NIS2)",
+      "type": "directive",
+      "in_force": true,
+      "url": "https://eur-lex.europa.eu/"
+    },
+    {
+      "id": "eu-dsa",
+      "name": "Regulation (EU) 2022/2065 (Digital Services Act)",
+      "type": "regulation",
+      "in_force": true,
+      "url": "https://eur-lex.europa.eu/"
+    }
+  ],
+  "facet_hints": {
+    "personal_data": "GDPR Articles 5 and 6 — principles and lawful bases.",
+    "special_categories": "Article 9 special categories and Article 10 criminal convictions data.",
+    "children": "Article 8 conditions for children's consent in information society services; note the member-state age variation between 13 and 16.",
+    "processor_terms": "Article 28(3) mandatory processor contract terms — the DPA question for every vendor.",
+    "cross_border": "Chapter V, Articles 44-49: adequacy, standard contractual clauses, derogations, and the transfer impact assessment expected after Schrems II.",
+    "automated_decisions": "Article 22 and the right to human intervention; read with Articles 13-15 on the information to be provided about the logic involved.",
+    "dpia": "Article 35 and the supervisory authority lists of processing requiring a DPIA.",
+    "breach_notification": "Article 33 (72 hours to the supervisory authority) and Article 34 (to data subjects).",
+    "ropa": "Article 30 records of processing activities and the small-organisation derogation.",
+    "ai_classification": "AI Act: determine whether the system is prohibited, high-risk (Annex III), limited-risk with transparency duties, or minimal-risk, and whether the operator is a provider or a deployer. Confirm which obligations have entered into application on today's date, because they phase in.",
+    "enforcement": "Search published supervisory authority decisions and EDPB binding decisions for comparable failures."
+  },
+  "seed_obligations": [
+    {
+      "id": "eu-gdpr-art5",
+      "provision": "Article 5",
+      "title": "Comply with the principles relating to processing of personal data",
+      "facets": [
+        "personal_data",
+        "retention"
+      ],
+      "applies_when": [
+        "processes personal data of data subjects in the EU"
+      ],
+      "testable_as": [
+        "purpose limitation per processing activity",
+        "data minimisation in schemas",
+        "storage limitation with a deletion path",
+        "accountability documentation"
+      ]
+    },
+    {
+      "id": "eu-gdpr-art6",
+      "provision": "Article 6",
+      "title": "Establish a lawful basis for each processing purpose",
+      "facets": [
+        "personal_data"
+      ],
+      "applies_when": [
+        "processes personal data"
+      ],
+      "testable_as": [
+        "a documented basis per purpose",
+        "legitimate interests assessments where relied on"
+      ]
+    },
+    {
+      "id": "eu-gdpr-art9",
+      "provision": "Article 9",
+      "title": "Meet an Article 9 condition before processing special category data",
+      "facets": [
+        "special_categories"
+      ],
+      "applies_when": [
+        "processes health, biometric, genetic, religious, political, or sexual-orientation data"
+      ],
+      "testable_as": [
+        "an identified Article 9(2) condition",
+        "explicit consent records where relied on"
+      ]
+    },
+    {
+      "id": "eu-gdpr-art28",
+      "provision": "Article 28(3)",
+      "title": "Have a processor contract containing the mandatory terms with every processor",
+      "facets": [
+        "processor_terms"
+      ],
+      "applies_when": [
+        "a third party processes personal data on your behalf, including an inference vendor"
+      ],
+      "testable_as": [
+        "a signed DPA per processor",
+        "sub-processor authorisation terms",
+        "a maintained list of sub-processors"
+      ]
+    },
+    {
+      "id": "eu-gdpr-art30",
+      "provision": "Article 30",
+      "title": "Maintain records of processing activities",
+      "facets": [
+        "ropa"
+      ],
+      "applies_when": [
+        "processing is not occasional, involves special categories, or the organisation has 250+ employees"
+      ],
+      "testable_as": [
+        "a ROPA artifact covering purposes, categories, recipients, transfers and retention"
+      ]
+    },
+    {
+      "id": "eu-gdpr-art32",
+      "provision": "Article 32",
+      "title": "Implement appropriate technical and organisational security measures",
+      "facets": [
+        "security_of_processing"
+      ],
+      "applies_when": [
+        "processes personal data"
+      ],
+      "testable_as": [
+        "encryption in transit and at rest",
+        "access control",
+        "tested restoration",
+        "no secrets in client bundles"
+      ]
+    },
+    {
+      "id": "eu-gdpr-art33",
+      "provision": "Article 33",
+      "title": "Notify a personal data breach to the supervisory authority without undue delay and within 72 hours",
+      "facets": [
+        "breach_notification"
+      ],
+      "applies_when": [
+        "a personal data breach occurs"
+      ],
+      "testable_as": [
+        "an incident runbook with the 72-hour clock",
+        "a breach register",
+        "an owner named"
+      ]
+    },
+    {
+      "id": "eu-gdpr-art35",
+      "provision": "Article 35",
+      "title": "Carry out a DPIA for high-risk processing",
+      "facets": [
+        "dpia"
+      ],
+      "applies_when": [
+        "systematic and extensive automated evaluation",
+        "large-scale special category processing",
+        "systematic monitoring of a public area"
+      ],
+      "testable_as": [
+        "a DPIA document",
+        "evidence of prior consultation where residual high risk remains"
+      ]
+    },
+    {
+      "id": "eu-gdpr-art44",
+      "provision": "Articles 44-49",
+      "title": "Meet a Chapter V condition for every transfer of personal data outside the EEA",
+      "facets": [
+        "cross_border"
+      ],
+      "applies_when": [
+        "personal data is transferred to or accessed from outside the EEA"
+      ],
+      "testable_as": [
+        "an adequacy decision, SCCs, or a derogation recorded per destination",
+        "a transfer impact assessment where SCCs are relied on"
+      ]
+    },
+    {
+      "id": "eu-gdpr-art22",
+      "provision": "Article 22",
+      "title": "Meet the conditions for solely automated decisions with legal or similarly significant effects",
+      "facets": [
+        "automated_decisions"
+      ],
+      "applies_when": [
+        "a decision is made solely by automated means and has legal or similarly significant effect"
+      ],
+      "testable_as": [
+        "a human review path that is real, not nominal",
+        "information about the logic involved",
+        "the ability to contest a decision"
+      ]
+    },
+    {
+      "id": "eu-ai-act-classification",
+      "provision": "AI Act classification",
+      "title": "Classify the AI system and meet the obligations attaching to that class and role",
+      "facets": [
+        "ai_classification"
+      ],
+      "applies_when": [
+        "places on the market, puts into service, or uses an AI system in the EU"
+      ],
+      "testable_as": [
+        "a recorded classification decision",
+        "provider or deployer role identified",
+        "transparency notices where required",
+        "technical documentation for high-risk systems"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "id": "pci-dss",
+  "name": "PCI DSS v4.x",
+  "kind": "framework",
+  "depth": "standard",
+  "currency": "USD",
+  "regulator": {
+    "name": "PCI Security Standards Council",
+    "url": "https://www.pcisecuritystandards.org/"
+  },
+  "authorities": [
+    "pcisecuritystandards.org",
+    "emvco.com"
+  ],
+  "instruments": [
+    {
+      "id": "pci-dss-4",
+      "name": "Payment Card Industry Data Security Standard v4.x",
+      "type": "standard",
+      "in_force": true,
+      "url": "https://www.pcisecuritystandards.org/document_library/"
+    }
+  ],
+  "facet_hints": {
+    "scope": "PCI DSS is contractual, not statutory, and applies only where cardholder data is stored, processed or transmitted. Determine scope first: a service that redirects to a hosted payment page has a very different obligation set from one that touches a PAN.",
+    "sad": "Sensitive authentication data must never be stored after authorisation — CVV, full track data, PIN blocks. This is the check most often failed in code.",
+    "pan_storage": "Where a PAN is stored it must be rendered unreadable; masking rules apply on display.",
+    "requirements": "Requirements 3 (protect stored account data), 4 (protect in transit), 6 (secure development), 8 (identify and authenticate), 10 (log and monitor), 11 (test), 12 (policy)."
+  },
+  "seed_obligations": [
+    {
+      "id": "pci-sad",
+      "provision": "Requirement 3.3",
+      "title": "Never store sensitive authentication data after authorisation",
+      "facets": [
+        "special_categories",
+        "security_of_processing"
+      ],
+      "applies_when": [
+        "handles payment card data"
+      ],
+      "testable_as": [
+        "no CVV/CVC column or field anywhere in the schema",
+        "no full track data",
+        "card fields not written to logs"
+      ]
+    },
+    {
+      "id": "pci-pan",
+      "provision": "Requirement 3.5",
+      "title": "Render the primary account number unreadable wherever it is stored",
+      "facets": [
+        "security_of_processing"
+      ],
+      "applies_when": [
+        "stores a PAN"
+      ],
+      "testable_as": [
+        "tokenisation or strong cryptography with documented key management",
+        "masking on display"
+      ]
+    },
+    {
+      "id": "pci-transit",
+      "provision": "Requirement 4",
+      "title": "Encrypt cardholder data in transit over open networks",
+      "facets": [
+        "security_of_processing"
+      ],
+      "applies_when": [
+        "transmits cardholder data"
+      ],
+      "testable_as": [
+        "TLS enforced",
+        "no card data in URLs or query strings"
+      ]
+    },
+    {
+      "id": "pci-logging",
+      "provision": "Requirement 10",
+      "title": "Log and monitor access to cardholder data",
+      "facets": [
+        "security_of_processing"
+      ],
+      "applies_when": [
+        "is in PCI scope"
+      ],
+      "testable_as": [
+        "audit log covering access to card data",
+        "clock synchronisation",
+        "log retention"
+      ]
+    }
+  ]
+}

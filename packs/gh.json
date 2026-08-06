@@ -1,0 +1,137 @@
+{
+  "id": "gh",
+  "name": "Ghana",
+  "kind": "region",
+  "depth": "deep",
+  "currency": "GHS",
+  "regulator": {
+    "name": "Data Protection Commission (Ghana)",
+    "url": "https://www.dataprotection.org.gh/"
+  },
+  "authorities": [
+    "dataprotection.org.gh",
+    "mint.gov.gh",
+    "parliament.gh",
+    "judicial.gov.gh",
+    "bog.gov.gh",
+    "nca.org.gh",
+    "sec.gov.gh",
+    "gra.gov.gh",
+    "moj.gov.gh",
+    "ghanalegal.com",
+    "laws.ghanalegal.com"
+  ],
+  "instruments": [
+    {
+      "id": "gh-dpa-843",
+      "name": "Data Protection Act, 2012 (Act 843)",
+      "type": "act",
+      "in_force": true,
+      "url": "https://www.dataprotection.org.gh/data-protection/data-protection-acts-2012"
+    },
+    {
+      "id": "gh-ecommerce-772",
+      "name": "Electronic Transactions Act, 2008 (Act 772)",
+      "type": "act",
+      "in_force": true,
+      "url": "https://www.nca.org.gh/"
+    },
+    {
+      "id": "gh-cybersecurity-1038",
+      "name": "Cybersecurity Act, 2020 (Act 1038)",
+      "type": "act",
+      "in_force": true,
+      "url": "https://www.csa.gov.gh/"
+    },
+    {
+      "id": "gh-payment-systems-987",
+      "name": "Payment Systems and Services Act, 2019 (Act 987)",
+      "type": "act",
+      "in_force": true,
+      "sector": "finance",
+      "url": "https://www.bog.gov.gh/"
+    },
+    {
+      "id": "gh-banks-930",
+      "name": "Banks and Specialised Deposit-Taking Institutions Act, 2016 (Act 930)",
+      "type": "act",
+      "in_force": true,
+      "sector": "finance",
+      "url": "https://www.bog.gov.gh/"
+    }
+  ],
+  "facet_hints": {
+    "registration": "Ghana operates a data controller registration regime with the Data Protection Commission; check whether registration and renewal obligations bite, and what the fee schedule and validity period currently are.",
+    "personal_data": "Act 843 defines personal data and the data protection principles; confirm the eight principles as enacted and how they map to processing conditions.",
+    "special_categories": "Act 843 treats certain data as special personal data; the Ghana Card number (NIA) and biometric identifiers are high-sensitivity in practice.",
+    "cross_border": "Check the conditions Act 843 places on transferring personal data outside Ghana and whether the Commission has issued guidance or a whitelist.",
+    "breach_notification": "Confirm whether Act 843 imposes a notification duty, to whom, and in what period; check separately whether the Cybersecurity Act 1038 imposes incident reporting for critical information infrastructure.",
+    "data_subject_rights": "Access, correction, prevention of processing, and the fee and response-time limits attached to each.",
+    "enforcement": "Search for enforcement notices, prosecutions and published decisions by the Data Protection Commission, and any court decisions applying Act 843."
+  },
+  "seed_obligations": [
+    {
+      "id": "gh-dpa-843-registration",
+      "provision": "Registration of data controllers",
+      "title": "Register as a data controller with the Data Protection Commission",
+      "facets": ["registration"],
+      "applies_when": ["processes personal data of individuals in Ghana"],
+      "testable_as": [
+        "evidence of a current Data Protection Commission registration certificate",
+        "a renewal date tracked somewhere the team will see it"
+      ],
+      "note": "Ghana's registration regime is unusual among the launch regions and is frequently missed by startups. Retrieval must confirm the current provision, fee, and validity period before this is reported."
+    },
+    {
+      "id": "gh-dpa-843-principles",
+      "provision": "Data protection principles",
+      "title": "Process personal data in accordance with the statutory principles",
+      "facets": ["personal_data", "security_of_processing", "retention"],
+      "applies_when": ["processes personal data"],
+      "testable_as": [
+        "a stated lawful basis per processing purpose",
+        "collection limited to the stated purpose",
+        "a retention period and a deletion path per data category"
+      ]
+    },
+    {
+      "id": "gh-dpa-843-security",
+      "provision": "Security of personal data",
+      "title": "Apply appropriate security safeguards to personal data",
+      "facets": ["security_of_processing"],
+      "applies_when": ["processes personal data"],
+      "testable_as": [
+        "encryption in transit and at rest for special personal data",
+        "access control on tables holding personal data",
+        "no credentials in client bundles or version control"
+      ]
+    },
+    {
+      "id": "gh-dpa-843-crossborder",
+      "provision": "Foreign processing of personal data",
+      "title": "Meet the conditions for processing personal data outside Ghana",
+      "facets": ["cross_border"],
+      "applies_when": [
+        "personal data of Ghanaian data subjects is processed outside Ghana",
+        "an inference or hosting vendor is located outside Ghana"
+      ],
+      "testable_as": [
+        "a documented transfer basis for each foreign vendor receiving personal data",
+        "a data processing agreement with each foreign processor"
+      ]
+    },
+    {
+      "id": "gh-ghana-card",
+      "provision": "Ghana Card / national identification number handling",
+      "title": "Handle Ghana Card numbers as high-sensitivity identifiers",
+      "facets": ["special_categories", "security_of_processing"],
+      "applies_when": ["stores or transmits a Ghana Card number"],
+      "testable_as": [
+        "the column is not returned by default in list endpoints",
+        "the value is not written to application logs",
+        "access is restricted and audited"
+      ]
+    }
+  ],
+  "notes": "Ghana is a launch-depth pack. Every obligation above is a retrieval target, not a finding: the corpus phase must confirm each provision number, its current text, and any penalty from a primary source before it can be reported."
+}

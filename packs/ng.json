@@ -1,0 +1,160 @@
+{
+  "id": "ng",
+  "name": "Nigeria",
+  "kind": "region",
+  "depth": "deep",
+  "currency": "NGN",
+  "regulator": {
+    "name": "Nigeria Data Protection Commission (NDPC)",
+    "url": "https://ndpc.gov.ng/"
+  },
+  "authorities": [
+    "ndpc.gov.ng",
+    "nitda.gov.ng",
+    "cbn.gov.ng",
+    "sec.gov.ng",
+    "placng.org",
+    "lawsofnigeria.placng.org",
+    "nassnig.org",
+    "cac.gov.ng"
+  ],
+  "instruments": [
+    {
+      "id": "ng-ndpa-2023",
+      "name": "Nigeria Data Protection Act, 2023",
+      "type": "act",
+      "in_force": true,
+      "url": "https://ndpc.gov.ng/"
+    },
+    {
+      "id": "ng-nitda-ndpr",
+      "name": "Nigeria Data Protection Regulation (NDPR) 2019 and its Implementation Framework",
+      "type": "regulation",
+      "in_force": true,
+      "url": "https://nitda.gov.ng/"
+    },
+    {
+      "id": "ng-cybercrimes-2015",
+      "name": "Cybercrimes (Prohibition, Prevention etc.) Act, 2015 (as amended)",
+      "type": "act",
+      "in_force": true,
+      "url": "https://placng.org/"
+    },
+    {
+      "id": "ng-cbn-consumer",
+      "name": "CBN consumer protection and risk-based cybersecurity frameworks",
+      "type": "guidance",
+      "in_force": true,
+      "sector": "finance",
+      "url": "https://www.cbn.gov.ng/"
+    }
+  ],
+  "facet_hints": {
+    "registration": "The NDPA introduces registration of data controllers and processors of major importance; confirm the current threshold, the registration window, and the filing route with the NDPC.",
+    "audit_filing": "The NDPR regime required an annual data protection audit filing through a licensed Data Protection Compliance Organisation (DPCO); confirm what survives under the NDPA and who must file.",
+    "personal_data": "Confirm the NDPA's lawful bases and principles, and how they differ from the earlier NDPR.",
+    "special_categories": "Sensitive personal data under the NDPA; note that NIN and BVN are high-sensitivity national identifiers in practice.",
+    "cross_border": "Confirm the NDPA's conditions for cross-border transfer, including adequacy-style assessment and the permitted derogations.",
+    "breach_notification": "Confirm the NDPA breach notification duty: to the Commission, to data subjects, and the period allowed.",
+    "dpo": "Confirm when a data protection officer must be designated.",
+    "enforcement": "Search NDPC enforcement actions, remedial fees and published investigations, including those against banks and fintechs."
+  },
+  "seed_obligations": [
+    {
+      "id": "ng-ndpa-registration",
+      "provision": "Registration of data controllers and processors of major importance",
+      "title": "Register with the NDPC if you are a controller of major importance",
+      "facets": [
+        "registration"
+      ],
+      "applies_when": [
+        "processes personal data of Nigerian data subjects above the threshold set by the Commission"
+      ],
+      "testable_as": [
+        "evidence of NDPC registration",
+        "a record of the threshold assessment that concluded registration was or was not required"
+      ]
+    },
+    {
+      "id": "ng-ndpa-lawful-basis",
+      "provision": "Lawful basis for processing",
+      "title": "Establish and record a lawful basis for each processing purpose",
+      "facets": [
+        "personal_data"
+      ],
+      "applies_when": [
+        "processes personal data"
+      ],
+      "testable_as": [
+        "a documented basis per purpose",
+        "consent records where consent is the basis"
+      ]
+    },
+    {
+      "id": "ng-ndpa-breach",
+      "provision": "Personal data breach notification",
+      "title": "Notify the Commission, and affected subjects, of a qualifying breach",
+      "facets": [
+        "breach_notification"
+      ],
+      "applies_when": [
+        "a personal data breach occurs"
+      ],
+      "testable_as": [
+        "an incident runbook naming the Commission and the deadline",
+        "a breach register",
+        "a path from detection to notification that a person owns"
+      ]
+    },
+    {
+      "id": "ng-ndpa-crossborder",
+      "provision": "Cross-border transfer of personal data",
+      "title": "Meet the conditions for transferring personal data out of Nigeria",
+      "facets": [
+        "cross_border"
+      ],
+      "applies_when": [
+        "personal data leaves Nigeria",
+        "a foreign inference or hosting vendor receives personal data"
+      ],
+      "testable_as": [
+        "a recorded transfer basis per destination",
+        "a DPA with each foreign processor"
+      ]
+    },
+    {
+      "id": "ng-ndpa-dpo",
+      "provision": "Data protection officer",
+      "title": "Designate a data protection officer where required",
+      "facets": [
+        "dpo"
+      ],
+      "applies_when": [
+        "controller of major importance",
+        "large-scale processing of sensitive personal data"
+      ],
+      "testable_as": [
+        "a named DPO with published contact details"
+      ]
+    },
+    {
+      "id": "ng-nin-bvn",
+      "provision": "NIN and BVN handling",
+      "title": "Treat NIN and BVN as high-sensitivity national identifiers",
+      "facets": [
+        "special_categories",
+        "security_of_processing"
+      ],
+      "applies_when": [
+        "stores or transmits a NIN or BVN"
+      ],
+      "testable_as": [
+        "not logged",
+        "not returned in list endpoints",
+        "access restricted and audited",
+        "encrypted at rest"
+      ]
+    }
+  ],
+  "notes": "Nigeria is a launch-depth pack. The NDPA 2023 superseded much of the NDPR regime but the implementation framework matters in practice; retrieval must establish the position in force today."
+}

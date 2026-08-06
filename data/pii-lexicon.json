@@ -1,0 +1,525 @@
+{
+  "version": 1,
+  "note": "Symbol-name lexicon used by phase 3 to find data-touching code locally. Matching is on identifier names, never on values.",
+  "categories": [
+    {
+      "name": "email address",
+      "special": false,
+      "terms": [
+        "email",
+        "e_mail",
+        "mail_address",
+        "emailaddress",
+        "email_addr",
+        "correo",
+        "courriel"
+      ]
+    },
+    {
+      "name": "phone number",
+      "special": false,
+      "terms": [
+        "phone",
+        "phone_number",
+        "mobile",
+        "msisdn",
+        "telephone",
+        "tel_no",
+        "whatsapp",
+        "cell",
+        "cellphone"
+      ]
+    },
+    {
+      "name": "full name",
+      "special": false,
+      "terms": [
+        "full_name",
+        "fullname",
+        "first_name",
+        "last_name",
+        "surname",
+        "given_name",
+        "family_name",
+        "middle_name",
+        "maiden_name"
+      ]
+    },
+    {
+      "name": "postal address",
+      "special": false,
+      "terms": [
+        "address",
+        "street",
+        "postcode",
+        "zip_code",
+        "postal_code",
+        "house_number",
+        "gps_address",
+        "digital_address"
+      ]
+    },
+    {
+      "name": "date of birth",
+      "special": false,
+      "terms": [
+        "dob",
+        "date_of_birth",
+        "birthdate",
+        "birth_date",
+        "birthday",
+        "age_at"
+      ]
+    },
+    {
+      "name": "Ghana Card number",
+      "special": true,
+      "terms": [
+        "ghana_card",
+        "ghanacard",
+        "ghana_card_number",
+        "nia_number",
+        "ghanacardno"
+      ],
+      "regions": [
+        "gh"
+      ]
+    },
+    {
+      "name": "Nigerian NIN",
+      "special": true,
+      "terms": [
+        "nin",
+        "nin_number",
+        "national_identity_number",
+        "nimc"
+      ],
+      "regions": [
+        "ng"
+      ]
+    },
+    {
+      "name": "Nigerian BVN",
+      "special": true,
+      "terms": [
+        "bvn",
+        "bank_verification_number"
+      ],
+      "regions": [
+        "ng"
+      ]
+    },
+    {
+      "name": "South African ID number",
+      "special": true,
+      "terms": [
+        "sa_id",
+        "said_number",
+        "rsa_id",
+        "id_number_za"
+      ],
+      "regions": [
+        "za"
+      ]
+    },
+    {
+      "name": "Aadhaar number",
+      "special": true,
+      "terms": [
+        "aadhaar",
+        "aadhar",
+        "uidai",
+        "aadhaar_number"
+      ],
+      "regions": [
+        "in"
+      ]
+    },
+    {
+      "name": "US Social Security number",
+      "special": true,
+      "terms": [
+        "ssn",
+        "social_security",
+        "social_security_number",
+        "tin",
+        "itin"
+      ],
+      "regions": [
+        "us-fed",
+        "us-ca"
+      ]
+    },
+    {
+      "name": "national identifier (generic)",
+      "special": true,
+      "terms": [
+        "national_id",
+        "nationalid",
+        "id_number",
+        "identity_number",
+        "citizen_id",
+        "passport",
+        "passport_number",
+        "passport_no",
+        "huduma"
+      ]
+    },
+    {
+      "name": "biometric data",
+      "special": true,
+      "terms": [
+        "biometric",
+        "fingerprint",
+        "face_id",
+        "faceprint",
+        "face_embedding",
+        "iris_scan",
+        "voiceprint",
+        "facial_recognition",
+        "selfie_match",
+        "liveness"
+      ]
+    },
+    {
+      "name": "health data",
+      "special": true,
+      "terms": [
+        "health",
+        "medical",
+        "diagnosis",
+        "prescription",
+        "patient",
+        "icd_code",
+        "blood_type",
+        "allergy",
+        "disability",
+        "mental_health",
+        "hiv",
+        "phi",
+        "ehr",
+        "emr"
+      ]
+    },
+    {
+      "name": "genetic data",
+      "special": true,
+      "terms": [
+        "genetic",
+        "genome",
+        "dna_sequence",
+        "genotype"
+      ]
+    },
+    {
+      "name": "religious belief",
+      "special": true,
+      "terms": [
+        "religion",
+        "religious",
+        "faith",
+        "denomination"
+      ]
+    },
+    {
+      "name": "political opinion",
+      "special": true,
+      "terms": [
+        "political",
+        "party_affiliation",
+        "political_opinion",
+        "voter_id"
+      ]
+    },
+    {
+      "name": "racial or ethnic origin",
+      "special": true,
+      "terms": [
+        "race",
+        "ethnicity",
+        "ethnic_group",
+        "tribe",
+        "caste",
+        "nationality_origin"
+      ]
+    },
+    {
+      "name": "sexual orientation",
+      "special": true,
+      "terms": [
+        "sexual_orientation",
+        "sexuality",
+        "gender_identity",
+        "lgbt"
+      ]
+    },
+    {
+      "name": "trade union membership",
+      "special": true,
+      "terms": [
+        "union_member",
+        "trade_union",
+        "union_membership"
+      ]
+    },
+    {
+      "name": "criminal record",
+      "special": true,
+      "terms": [
+        "criminal_record",
+        "conviction",
+        "offence",
+        "arrest_record",
+        "police_clearance"
+      ]
+    },
+    {
+      "name": "precise location",
+      "special": true,
+      "terms": [
+        "latitude",
+        "longitude",
+        "lat_lng",
+        "geolocation",
+        "gps_coord",
+        "precise_location",
+        "coordinates",
+        "geo_point"
+      ]
+    },
+    {
+      "name": "payment card data",
+      "special": true,
+      "terms": [
+        "card_number",
+        "pan",
+        "cardnumber",
+        "cvv",
+        "cvc",
+        "card_security_code",
+        "expiry_date",
+        "cardholder",
+        "track_data",
+        "pin_block"
+      ]
+    },
+    {
+      "name": "bank account",
+      "special": false,
+      "terms": [
+        "account_number",
+        "iban",
+        "swift",
+        "sort_code",
+        "routing_number",
+        "bank_account",
+        "momo_number",
+        "wallet_id"
+      ]
+    },
+    {
+      "name": "credentials",
+      "special": true,
+      "terms": [
+        "password",
+        "password_hash",
+        "passwd",
+        "secret_answer",
+        "security_question",
+        "otp",
+        "two_factor_secret",
+        "totp_secret",
+        "recovery_code",
+        "session_token",
+        "refresh_token"
+      ]
+    },
+    {
+      "name": "children's data",
+      "special": true,
+      "terms": [
+        "child",
+        "minor",
+        "guardian",
+        "parental_consent",
+        "student_id",
+        "school_id",
+        "under_13",
+        "under_18"
+      ]
+    },
+    {
+      "name": "employment data",
+      "special": false,
+      "terms": [
+        "salary",
+        "payroll",
+        "employee_id",
+        "performance_review",
+        "disciplinary"
+      ]
+    },
+    {
+      "name": "device and tracking identifiers",
+      "special": false,
+      "terms": [
+        "device_id",
+        "advertising_id",
+        "idfa",
+        "gaid",
+        "fingerprint_id",
+        "cookie_id",
+        "session_id",
+        "ip_address",
+        "user_agent"
+      ]
+    },
+    {
+      "name": "immigration status",
+      "special": true,
+      "terms": [
+        "visa_status",
+        "immigration_status",
+        "residence_permit",
+        "asylum",
+        "refugee_status"
+      ]
+    }
+  ],
+  "compliance_artifacts": [
+    {
+      "key": "privacy_policy",
+      "label": "privacy policy",
+      "patterns": [
+        "privacy-policy*",
+        "privacy_policy*",
+        "PRIVACY*",
+        "**/privacy/**",
+        "**/legal/privacy*",
+        "**/(legal)/privacy*"
+      ]
+    },
+    {
+      "key": "terms",
+      "label": "terms of service",
+      "patterns": [
+        "terms*",
+        "TERMS*",
+        "**/legal/terms*",
+        "tos*"
+      ]
+    },
+    {
+      "key": "dpa",
+      "label": "data processing agreement",
+      "patterns": [
+        "dpa*",
+        "DPA*",
+        "*data-processing-agreement*",
+        "*data_processing_agreement*"
+      ]
+    },
+    {
+      "key": "ropa",
+      "label": "records of processing activities",
+      "patterns": [
+        "ropa*",
+        "ROPA*",
+        "*records-of-processing*",
+        "*record_of_processing*",
+        "*processing-register*"
+      ]
+    },
+    {
+      "key": "dpia",
+      "label": "data protection impact assessment",
+      "patterns": [
+        "dpia*",
+        "DPIA*",
+        "*impact-assessment*",
+        "*impact_assessment*",
+        "pia*"
+      ]
+    },
+    {
+      "key": "retention_policy",
+      "label": "retention policy",
+      "patterns": [
+        "*retention*"
+      ]
+    },
+    {
+      "key": "incident_runbook",
+      "label": "incident response runbook",
+      "patterns": [
+        "*incident*",
+        "*breach*",
+        "runbook*",
+        "*security-response*"
+      ]
+    },
+    {
+      "key": "subject_request_handler",
+      "label": "data subject request handler",
+      "patterns": [
+        "*dsar*",
+        "*subject-request*",
+        "*subject_request*",
+        "*data-request*",
+        "*(delete|erasure)-request*"
+      ]
+    },
+    {
+      "key": "consent_store",
+      "label": "consent store",
+      "patterns": [
+        "*consent*"
+      ]
+    },
+    {
+      "key": "audit_log",
+      "label": "audit log",
+      "patterns": [
+        "*audit*"
+      ]
+    },
+    {
+      "key": "deletion_path",
+      "label": "deletion path",
+      "patterns": [
+        "*delete-account*",
+        "*delete_account*",
+        "*erasure*",
+        "*purge*",
+        "*right-to-be-forgotten*"
+      ]
+    },
+    {
+      "key": "ai_documentation",
+      "label": "AI system documentation",
+      "patterns": [
+        "*model-card*",
+        "*model_card*",
+        "*ai-policy*",
+        "*ai_policy*",
+        "*system-card*"
+      ]
+    },
+    {
+      "key": "security_policy",
+      "label": "security policy",
+      "patterns": [
+        "SECURITY*",
+        "security.md",
+        "*security-policy*"
+      ]
+    },
+    {
+      "key": "cookie_policy",
+      "label": "cookie policy",
+      "patterns": [
+        "*cookie*"
+      ]
+    }
+  ]
+}

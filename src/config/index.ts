@@ -23,10 +23,18 @@ export const ConfigSchema = z.object({
       data_stored_in: z.array(z.string()).default([]),
     })
     .default({ users_in: [], data_stored_in: [] }),
+  /**
+   * The three seats of §2, all reached through OpenRouter on one key. Model ids
+   * are never hardcoded: `doctor` validates each against the live model list
+   * before a run starts, so a vendor rename cannot silently break a scan.
+   *
+   * Keep the seats on different model families. The security seat marking the
+   * architect seat's homework is the failure mode this separation exists to stop.
+   */
   models: z.object({
-    research: z.object({ provider: z.literal("perplexity"), id: z.string().min(1) }),
-    security: z.object({ provider: z.literal("openai"), id: z.string().min(1) }),
-    architect: z.object({ provider: z.literal("anthropic"), id: z.string().min(1) }),
+    research: z.object({ provider: z.literal("openrouter"), id: z.string().min(1) }),
+    security: z.object({ provider: z.literal("openrouter"), id: z.string().min(1) }),
+    architect: z.object({ provider: z.literal("openrouter"), id: z.string().min(1) }),
   }),
   sovereignty: z
     .object({
@@ -47,14 +55,14 @@ export const ConfigSchema = z.object({
     .object({
       per_run_usd: z
         .object({
-          perplexity: z.number().nonnegative().default(5),
-          openai: z.number().nonnegative().default(8),
-          anthropic: z.number().nonnegative().default(8),
+          research: z.number().nonnegative().default(5),
+          security: z.number().nonnegative().default(8),
+          architect: z.number().nonnegative().default(8),
         })
-        .default({ perplexity: 5, openai: 8, anthropic: 8 }),
+        .default({ research: 5, security: 8, architect: 8 }),
       on_exceed: z.enum(["stop", "warn", "degrade"]).default("stop"),
     })
-    .default({ per_run_usd: { perplexity: 5, openai: 8, anthropic: 8 }, on_exceed: "stop" }),
+    .default({ per_run_usd: { research: 5, security: 8, architect: 8 }, on_exceed: "stop" }),
   scan: z
     .object({
       include: z.array(z.string()).default(["**/*"]),
@@ -116,7 +124,8 @@ export function saveConfig(file: string, cfg: Config): void {
   const header =
     `# ${BRAND.display} configuration\n` +
     `# ${BRAND.disclaimerShort}\n` +
-    `# Model IDs are validated against your account by \`${BRAND.name} doctor\`.\n\n`;
+    `# One OpenRouter key serves all three seats. Model ids are validated against\n` +
+    `# the live model list by \`${BRAND.name} doctor\` before any run starts.\n\n`;
   writeOut(file, header + stringifyYaml(cfg, { lineWidth: 100 }));
 }
 
@@ -130,9 +139,9 @@ export function defaultConfig(name: string, regions: string[]): Config {
     frameworks: ["owasp-llm-top10"],
     data_residency: { users_in: [], data_stored_in: [] },
     models: {
-      research: { provider: "perplexity", id: "sonar-pro" },
-      security: { provider: "openai", id: "gpt-4o" },
-      architect: { provider: "anthropic", id: "claude-sonnet-4-5" },
+      research: { provider: "openrouter", id: "perplexity/sonar-pro" },
+      security: { provider: "openrouter", id: "openai/gpt-4o" },
+      architect: { provider: "openrouter", id: "anthropic/claude-sonnet-4.5" },
     },
     sovereignty: {
       level: 1,
@@ -141,7 +150,7 @@ export function defaultConfig(name: string, regions: string[]): Config {
       never_send: [],
       verbatim_allowlist: [],
     },
-    budget: { per_run_usd: { perplexity: 5, openai: 8, anthropic: 8 }, on_exceed: "stop" },
+    budget: { per_run_usd: { research: 5, security: 8, architect: 8 }, on_exceed: "stop" },
     scan: {
       include: ["**/*"],
       exclude: [

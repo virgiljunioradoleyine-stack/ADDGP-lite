@@ -1,0 +1,136 @@
+{
+  "id": "za",
+  "name": "South Africa",
+  "kind": "region",
+  "depth": "standard",
+  "currency": "ZAR",
+  "regulator": {
+    "name": "Information Regulator (South Africa)",
+    "url": "https://inforegulator.org.za/"
+  },
+  "authorities": [
+    "inforegulator.org.za",
+    "gov.za",
+    "justice.gov.za",
+    "saflii.org",
+    "resbank.co.za"
+  ],
+  "instruments": [
+    {
+      "id": "za-popia",
+      "name": "Protection of Personal Information Act, 2013 (Act 4 of 2013)",
+      "type": "act",
+      "in_force": true,
+      "url": "https://inforegulator.org.za/"
+    },
+    {
+      "id": "za-popia-regs",
+      "name": "POPIA Regulations, 2018",
+      "type": "regulation",
+      "in_force": true,
+      "url": "https://inforegulator.org.za/"
+    },
+    {
+      "id": "za-ecta",
+      "name": "Electronic Communications and Transactions Act, 2002",
+      "type": "act",
+      "in_force": true,
+      "url": "https://www.gov.za/"
+    },
+    {
+      "id": "za-paia",
+      "name": "Promotion of Access to Information Act, 2000",
+      "type": "act",
+      "in_force": true,
+      "url": "https://www.justice.gov.za/"
+    }
+  ],
+  "facet_hints": {
+    "conditions": "POPIA is structured around eight conditions for lawful processing; map obligations to those conditions rather than to GDPR articles.",
+    "information_officer": "POPIA requires an Information Officer, with registration with the Regulator; confirm the current registration process.",
+    "special_categories": "POPIA special personal information, including the separate regime for children's data.",
+    "cross_border": "Section 72 governs transborder flows; confirm the permitted grounds.",
+    "direct_marketing": "Section 69 governs direct marketing by electronic communication and is opt-in; this catches many products.",
+    "enforcement": "Search Information Regulator enforcement notices and infringement notices."
+  },
+  "seed_obligations": [
+    {
+      "id": "za-popia-conditions",
+      "provision": "Conditions for lawful processing",
+      "title": "Meet the eight conditions for lawful processing",
+      "facets": [
+        "personal_data",
+        "security_of_processing",
+        "retention"
+      ],
+      "applies_when": [
+        "processes personal information of data subjects in South Africa"
+      ],
+      "testable_as": [
+        "purpose specification per processing activity",
+        "retention limits with a deletion path",
+        "security safeguards"
+      ]
+    },
+    {
+      "id": "za-popia-io",
+      "provision": "Information Officer",
+      "title": "Designate and register an Information Officer",
+      "facets": [
+        "governance"
+      ],
+      "applies_when": [
+        "is a responsible party under POPIA"
+      ],
+      "testable_as": [
+        "a named Information Officer",
+        "evidence of registration with the Regulator"
+      ]
+    },
+    {
+      "id": "za-popia-s72",
+      "provision": "Section 72 — transborder information flows",
+      "title": "Meet the grounds for transferring personal information outside South Africa",
+      "facets": [
+        "cross_border"
+      ],
+      "applies_when": [
+        "personal information leaves South Africa"
+      ],
+      "testable_as": [
+        "a recorded s72 ground per destination",
+        "binding agreements with foreign processors"
+      ]
+    },
+    {
+      "id": "za-popia-s22",
+      "provision": "Notification of security compromises",
+      "title": "Notify the Regulator and data subjects of a security compromise",
+      "facets": [
+        "breach_notification"
+      ],
+      "applies_when": [
+        "a security compromise affecting personal information occurs"
+      ],
+      "testable_as": [
+        "an incident runbook naming the Regulator",
+        "a breach register"
+      ]
+    },
+    {
+      "id": "za-popia-s69",
+      "provision": "Section 69 — direct marketing",
+      "title": "Obtain consent before electronic direct marketing",
+      "facets": [
+        "consent_marketing"
+      ],
+      "applies_when": [
+        "sends marketing by email, SMS or automatic calling machine"
+      ],
+      "testable_as": [
+        "an opt-in consent record per recipient",
+        "an unsubscribe path"
+      ]
+    }
+  ]
+}

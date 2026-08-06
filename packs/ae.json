@@ -1,0 +1,90 @@
+{
+  "id": "ae",
+  "name": "United Arab Emirates",
+  "kind": "region",
+  "depth": "standard",
+  "currency": "AED",
+  "regulator": {
+    "name": "UAE Data Office; DIFC Commissioner of Data Protection; ADGM Office of Data Protection",
+    "url": "https://u.ae/"
+  },
+  "authorities": [
+    "u.ae",
+    "tdra.gov.ae",
+    "difc.ae",
+    "adgm.com",
+    "moj.gov.ae"
+  ],
+  "instruments": [
+    {
+      "id": "ae-pdpl",
+      "name": "Federal Decree-Law No. 45 of 2021 on the Protection of Personal Data",
+      "type": "act",
+      "in_force": true,
+      "url": "https://u.ae/"
+    },
+    {
+      "id": "ae-difc-dp-2020",
+      "name": "DIFC Data Protection Law No. 5 of 2020",
+      "type": "act",
+      "in_force": true,
+      "url": "https://www.difc.ae/business/laws-and-regulations/"
+    },
+    {
+      "id": "ae-adgm-dp-2021",
+      "name": "ADGM Data Protection Regulations 2021",
+      "type": "regulation",
+      "in_force": true,
+      "url": "https://www.adgm.com/"
+    }
+  ],
+  "facet_hints": {
+    "which_regime": "The UAE has three overlapping regimes: the federal PDPL, DIFC, and ADGM. Which one applies turns on where the entity is established. Establish this first — reporting DIFC obligations to a mainland company is a false gap.",
+    "executive_regulations": "The federal PDPL's executive regulations condition much of its operation; confirm their status.",
+    "cross_border": "Each regime has its own transfer rules and adequacy approach."
+  },
+  "seed_obligations": [
+    {
+      "id": "ae-which-regime",
+      "provision": "Scope",
+      "title": "Determine which UAE data protection regime applies to this entity",
+      "facets": [
+        "governance"
+      ],
+      "applies_when": [
+        "processes personal data in or from the UAE"
+      ],
+      "testable_as": [
+        "a recorded determination of federal PDPL, DIFC or ADGM applicability"
+      ]
+    },
+    {
+      "id": "ae-pdpl-crossborder",
+      "provision": "Cross-border transfer",
+      "title": "Meet the applicable regime's conditions for transferring personal data outside the UAE",
+      "facets": [
+        "cross_border"
+      ],
+      "applies_when": [
+        "personal data leaves the UAE"
+      ],
+      "testable_as": [
+        "a recorded transfer basis per destination"
+      ]
+    },
+    {
+      "id": "ae-pdpl-breach",
+      "provision": "Breach notification",
+      "title": "Notify the competent authority of a personal data breach",
+      "facets": [
+        "breach_notification"
+      ],
+      "applies_when": [
+        "a personal data breach occurs"
+      ],
+      "testable_as": [
+        "an incident runbook naming the correct authority for the applicable regime"
+      ]
+    }
+  ]
+}

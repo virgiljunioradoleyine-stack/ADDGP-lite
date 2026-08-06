@@ -1,0 +1,93 @@
+{
+  "id": "nist-ai-rmf",
+  "name": "NIST AI Risk Management Framework 1.0",
+  "kind": "framework",
+  "depth": "standard",
+  "currency": "USD",
+  "regulator": {
+    "name": "National Institute of Standards and Technology",
+    "url": "https://www.nist.gov/itl/ai-risk-management-framework"
+  },
+  "authorities": [
+    "nist.gov",
+    "nvlpubs.nist.gov",
+    "airc.nist.gov"
+  ],
+  "instruments": [
+    {
+      "id": "nist-ai-rmf-1",
+      "name": "NIST AI RMF 1.0 (NIST AI 100-1) and the Generative AI Profile (NIST AI 600-1)",
+      "type": "guidance",
+      "in_force": true,
+      "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf"
+    }
+  ],
+  "facet_hints": {
+    "nature": "Voluntary framework organised around four functions: GOVERN, MAP, MEASURE, MANAGE. It is freely published, so citations should point at the actual PDF sections.",
+    "generative_profile": "The Generative AI Profile enumerates risks specific to generative systems, including confabulation, data leakage, and harmful bias, and is directly useful for mapping phase-4 findings."
+  },
+  "seed_obligations": [
+    {
+      "id": "nist-govern",
+      "provision": "GOVERN function",
+      "title": "Establish accountability structures for AI risk",
+      "facets": [
+        "ai_classification",
+        "governance"
+      ],
+      "applies_when": [
+        "operates an AI system"
+      ],
+      "testable_as": [
+        "documented roles",
+        "a risk tolerance statement",
+        "an inventory of AI systems"
+      ]
+    },
+    {
+      "id": "nist-map",
+      "provision": "MAP function",
+      "title": "Establish the context and identify risks of the AI system",
+      "facets": [
+        "ai_classification"
+      ],
+      "applies_when": [
+        "operates an AI system"
+      ],
+      "testable_as": [
+        "documented intended use and misuse cases",
+        "identified affected populations"
+      ]
+    },
+    {
+      "id": "nist-measure",
+      "provision": "MEASURE function",
+      "title": "Measure identified AI risks with defined methods",
+      "facets": [
+        "ai_classification"
+      ],
+      "applies_when": [
+        "operates an AI system"
+      ],
+      "testable_as": [
+        "evaluation results for the identified risks",
+        "monitoring in production"
+      ]
+    },
+    {
+      "id": "nist-manage",
+      "provision": "MANAGE function",
+      "title": "Prioritise and act on measured AI risks",
+      "facets": [
+        "ai_classification"
+      ],
+      "applies_when": [
+        "operates an AI system"
+      ],
+      "testable_as": [
+        "a treatment decision per identified risk",
+        "incident response covering AI failure modes"
+      ]
+    }
+  ]
+}

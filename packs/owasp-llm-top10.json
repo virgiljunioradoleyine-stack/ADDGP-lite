@@ -1,0 +1,94 @@
+{
+  "id": "owasp-llm-top10",
+  "name": "OWASP Top 10 for LLM Applications",
+  "kind": "framework",
+  "depth": "standard",
+  "currency": "USD",
+  "regulator": {
+    "name": "OWASP Foundation",
+    "url": "https://owasp.org/"
+  },
+  "authorities": [
+    "owasp.org",
+    "genai.owasp.org",
+    "cheatsheetseries.owasp.org"
+  ],
+  "instruments": [
+    {
+      "id": "owasp-llm-top10",
+      "name": "OWASP Top 10 for Large Language Model Applications",
+      "type": "standard",
+      "in_force": true,
+      "url": "https://genai.owasp.org/llm-top-10/"
+    }
+  ],
+  "facet_hints": {
+    "mapping": "This pack is the vocabulary phase 4 maps its AI findings onto. Confirm the current edition's item numbering and titles before labelling a finding, because the list has been renumbered between editions.",
+    "usage": "Every AI finding should carry an LLM item where one fits, so security and legal reviewers can talk about the same thing."
+  },
+  "seed_obligations": [
+    {
+      "id": "owasp-llm01",
+      "provision": "LLM01",
+      "title": "Mitigate prompt injection, direct and indirect",
+      "facets": [
+        "ai_classification"
+      ],
+      "applies_when": [
+        "untrusted content reaches a model prompt"
+      ],
+      "testable_as": [
+        "untrusted input is delimited and never concatenated into instructions",
+        "tool calls are authorised independently of model output"
+      ]
+    },
+    {
+      "id": "owasp-llm02",
+      "provision": "LLM02",
+      "title": "Handle model output as untrusted before it reaches a sink",
+      "facets": [
+        "ai_classification"
+      ],
+      "applies_when": [
+        "model output reaches HTML, SQL, a shell, or a tool call"
+      ],
+      "testable_as": [
+        "output encoded or validated at each sink",
+        "no direct rendering of model output as HTML"
+      ]
+    },
+    {
+      "id": "owasp-llm-sensitive",
+      "provision": "Sensitive information disclosure",
+      "title": "Prevent personal data from reaching prompts, logs, or the vendor unnecessarily",
+      "facets": [
+        "ai_classification",
+        "personal_data"
+      ],
+      "applies_when": [
+        "personal data can enter a prompt"
+      ],
+      "testable_as": [
+        "field-level control over what enters a prompt",
+        "prompt logs scrubbed of personal data",
+        "a recorded legal basis for what does reach the vendor"
+      ]
+    },
+    {
+      "id": "owasp-llm-agency",
+      "provision": "Excessive agency",
+      "title": "Constrain what a model-triggered tool call is permitted to do",
+      "facets": [
+        "ai_classification"
+      ],
+      "applies_when": [
+        "the model can trigger a tool, function or API call"
+      ],
+      "testable_as": [
+        "least-privilege credentials for tool calls",
+        "human confirmation for consequential actions",
+        "an audit trail of tool invocations"
+      ]
+    }
+  ]
+}

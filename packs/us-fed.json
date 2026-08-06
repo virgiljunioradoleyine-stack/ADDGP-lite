@@ -1,0 +1,127 @@
+{
+  "id": "us-fed",
+  "name": "United States (federal)",
+  "kind": "region",
+  "depth": "standard",
+  "currency": "USD",
+  "regulator": {
+    "name": "Sectoral — FTC, HHS OCR, CFPB, SEC and others",
+    "url": "https://www.ftc.gov/"
+  },
+  "authorities": [
+    "ftc.gov",
+    "hhs.gov",
+    "ecfr.gov",
+    "congress.gov",
+    "govinfo.gov",
+    "cfpb.gov",
+    "sec.gov",
+    "nist.gov"
+  ],
+  "instruments": [
+    {
+      "id": "us-ftc-act-5",
+      "name": "FTC Act Section 5 (unfair or deceptive acts or practices)",
+      "type": "act",
+      "in_force": true,
+      "url": "https://www.ftc.gov/"
+    },
+    {
+      "id": "us-hipaa",
+      "name": "HIPAA Privacy, Security and Breach Notification Rules (45 CFR Parts 160 and 164)",
+      "type": "regulation",
+      "in_force": true,
+      "sector": "health",
+      "url": "https://www.ecfr.gov/"
+    },
+    {
+      "id": "us-glba",
+      "name": "Gramm-Leach-Bliley Act and the FTC Safeguards Rule (16 CFR Part 314)",
+      "type": "regulation",
+      "in_force": true,
+      "sector": "finance",
+      "url": "https://www.ecfr.gov/"
+    },
+    {
+      "id": "us-coppa",
+      "name": "Children's Online Privacy Protection Rule (16 CFR Part 312)",
+      "type": "regulation",
+      "in_force": true,
+      "url": "https://www.ecfr.gov/"
+    }
+  ],
+  "facet_hints": {
+    "sectoral": "There is no general federal privacy statute. Determine which sectoral regime applies before reporting anything: health data (HIPAA, and only for covered entities and business associates), financial (GLBA), children under 13 (COPPA), everything else (FTC Act s5 and state law).",
+    "deception": "FTC Act s5 makes a privacy policy that does not match the code an enforceable deception. Compare stated practice to observed practice — this is the highest-value check in this pack.",
+    "safeguards": "The FTC Safeguards Rule imposes specific technical requirements on non-bank financial institutions, including encryption, MFA and a written information security programme.",
+    "children": "COPPA applies to under-13s and carries per-violation civil penalties.",
+    "enforcement": "Search FTC consent orders and complaints for comparable practices."
+  },
+  "seed_obligations": [
+    {
+      "id": "us-ftc-s5-deception",
+      "provision": "FTC Act Section 5",
+      "title": "Do not misrepresent your data practices",
+      "facets": [
+        "governance"
+      ],
+      "applies_when": [
+        "publishes a privacy policy or makes any public statement about data handling"
+      ],
+      "testable_as": [
+        "the privacy policy matches what the code actually does",
+        "claims about encryption, retention, sharing and training use are true"
+      ]
+    },
+    {
+      "id": "us-coppa-notice",
+      "provision": "16 CFR 312",
+      "title": "Obtain verifiable parental consent before collecting personal information from children under 13",
+      "facets": [
+        "children"
+      ],
+      "applies_when": [
+        "the service is directed to children under 13 or has actual knowledge of under-13 users"
+      ],
+      "testable_as": [
+        "an age gate",
+        "a verifiable parental consent mechanism",
+        "a direct notice to parents"
+      ]
+    },
+    {
+      "id": "us-glba-safeguards",
+      "provision": "16 CFR 314",
+      "title": "Maintain a written information security programme meeting the Safeguards Rule",
+      "facets": [
+        "security_of_processing"
+      ],
+      "applies_when": [
+        "is a non-bank financial institution under GLBA"
+      ],
+      "testable_as": [
+        "encryption of customer information in transit and at rest",
+        "MFA on systems holding customer information",
+        "a designated qualified individual",
+        "a written programme"
+      ]
+    },
+    {
+      "id": "us-hipaa-security",
+      "provision": "45 CFR 164 Subpart C",
+      "title": "Meet the HIPAA Security Rule safeguards for electronic protected health information",
+      "facets": [
+        "special_categories",
+        "security_of_processing"
+      ],
+      "applies_when": [
+        "is a covered entity or business associate handling ePHI"
+      ],
+      "testable_as": [
+        "access controls and audit controls",
+        "a risk analysis",
+        "business associate agreements with every vendor touching ePHI"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "id": "us-ca",
+  "name": "California",
+  "kind": "region",
+  "depth": "standard",
+  "currency": "USD",
+  "regulator": {
+    "name": "California Privacy Protection Agency",
+    "url": "https://cppa.ca.gov/"
+  },
+  "authorities": [
+    "cppa.ca.gov",
+    "oag.ca.gov",
+    "leginfo.legislature.ca.gov",
+    "ecfr.gov"
+  ],
+  "instruments": [
+    {
+      "id": "us-ca-ccpa",
+      "name": "California Consumer Privacy Act as amended by the CPRA (Cal. Civ. Code 1798.100 et seq.)",
+      "type": "act",
+      "in_force": true,
+      "url": "https://leginfo.legislature.ca.gov/"
+    },
+    {
+      "id": "us-ca-regs",
+      "name": "CCPA Regulations (Cal. Code Regs. tit. 11)",
+      "type": "regulation",
+      "in_force": true,
+      "url": "https://cppa.ca.gov/regulations/"
+    }
+  ],
+  "facet_hints": {
+    "thresholds": "CCPA applies only above business thresholds (revenue, volume of consumers, or share of revenue from selling or sharing). Establish whether the thresholds are met before reporting obligations — a student project usually is not covered, and saying so plainly is more useful than a false gap.",
+    "sale_sharing": "'Sale' and 'sharing' are defined broadly enough to catch advertising pixels and some analytics; opt-out rights follow.",
+    "sensitive_pi": "Sensitive personal information has a separate right to limit use.",
+    "rights": "Access, deletion, correction, portability, opt-out of sale/sharing, limit use of sensitive PI, and non-discrimination for exercising them.",
+    "contracts": "Service provider and contractor contract terms are prescribed.",
+    "enforcement": "Search CPPA and California Attorney General enforcement actions."
+  },
+  "seed_obligations": [
+    {
+      "id": "us-ca-threshold",
+      "provision": "1798.140 definitions",
+      "title": "Determine whether the business thresholds are met",
+      "facets": [
+        "governance"
+      ],
+      "applies_when": [
+        "does business in California"
+      ],
+      "testable_as": [
+        "a recorded threshold assessment"
+      ]
+    },
+    {
+      "id": "us-ca-optout",
+      "provision": "1798.120 / 1798.135",
+      "title": "Provide an opt-out of sale or sharing, including a recognised opt-out preference signal",
+      "facets": [
+        "consent_marketing"
+      ],
+      "applies_when": [
+        "sells or shares personal information, including via advertising or analytics tags"
+      ],
+      "testable_as": [
+        "a Do Not Sell or Share link",
+        "Global Privacy Control handled server-side",
+        "tags suppressed after opt-out"
+      ]
+    },
+    {
+      "id": "us-ca-rights",
+      "provision": "1798.100-1798.130",
+      "title": "Honour consumer rights requests within the statutory periods",
+      "facets": [
+        "data_subject_rights"
+      ],
+      "applies_when": [
+        "is a covered business"
+      ],
+      "testable_as": [
+        "a request intake path",
+        "identity verification",
+        "a deletion path that reaches service providers",
+        "response within the statutory period"
+      ]
+    },
+    {
+      "id": "us-ca-service-provider",
+      "provision": "1798.100(d)",
+      "title": "Include the prescribed terms in contracts with service providers and contractors",
+      "facets": [
+        "processor_terms"
+      ],
+      "applies_when": [
+        "discloses personal information to a vendor"
+      ],
+      "testable_as": [
+        "contract terms restricting retention, use and disclosure",
+        "a vendor inventory"
+      ]
+    }
+  ]
+}

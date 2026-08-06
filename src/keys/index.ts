@@ -5,13 +5,15 @@ import { exec } from "../util/exec.ts";
 import { keyStorePath, writeFileSecure } from "../util/paths.ts";
 import { redactValue, log, UserError } from "../util/log.ts";
 
-export type Provider = "perplexity" | "openai" | "anthropic";
-export const PROVIDERS: Provider[] = ["perplexity", "openai", "anthropic"];
+/**
+ * One key, one vendor. All three model seats are reached through OpenRouter, so
+ * a student signs up once instead of opening three billing accounts.
+ */
+export type Provider = "openrouter";
+export const PROVIDERS: Provider[] = ["openrouter"];
 
 export const ENV_VAR: Record<Provider, string> = {
-  perplexity: "PERPLEXITY_API_KEY",
-  openai: "OPENAI_API_KEY",
-  anthropic: "ANTHROPIC_API_KEY",
+  openrouter: "OPENROUTER_API_KEY",
 };
 
 export type KeySource = "env" | "keychain" | "encrypted-file" | "absent";
@@ -124,35 +126,45 @@ interface Vault {
   data: string;
 }
 
-function deriveKey(pass: string, salt: Buffer): Buffer {
-  return scryptSync(pass, salt, 32, { N: 2 ** 15, r: 8, p: 1, maxmem: 96 * 1024 * 1024 });
+/**
+ * Bun and Node disagree about whether a Buffer is a Uint8Array at the type level,
+ * so the crypto path speaks Uint8Array throughout and converts at the edges.
+ */
+const toBytes = (b: Buffer): Uint8Array => new Uint8Array(b.buffer, b.byteOffset, b.byteLength);
+const fromB64 = (s: string): Uint8Array => toBytes(Buffer.from(s, "base64"));
+const toB64 = (u: Uint8Array): string => Buffer.from(u).toString("base64");
+
+function deriveKey(pass: string, salt: Uint8Array): Uint8Array {
+  return toBytes(
+    scryptSync(pass, salt, 32, { N: 2 ** 15, r: 8, p: 1, maxmem: 96 * 1024 * 1024 }) as Buffer,
+  );
 }
 
 function encryptVault(secrets: Record<string, string>, pass: string): Vault {
-  const salt = randomBytes(16);
-  const iv = randomBytes(12);
+  const salt = toBytes(randomBytes(16));
+  const iv = toBytes(randomBytes(12));
   const key = deriveKey(pass, salt);
   const cipher = createCipheriv("aes-256-gcm", key, iv);
   const data = Buffer.concat([
-    cipher.update(JSON.stringify(secrets), "utf8"),
-    cipher.final(),
+    toBytes(cipher.update(JSON.stringify(secrets), "utf8")),
+    toBytes(cipher.final()),
   ]);
   return {
     v: 1,
-    salt: salt.toString("base64"),
-    iv: iv.toString("base64"),
-    tag: cipher.getAuthTag().toString("base64"),
+    salt: toB64(salt),
+    iv: toB64(iv),
+    tag: toB64(toBytes(cipher.getAuthTag())),
     data: data.toString("base64"),
   };
 }
 
 function decryptVault(vault: Vault, pass: string): Record<string, string> {
-  const key = deriveKey(pass, Buffer.from(vault.salt, "base64"));
-  const decipher = createDecipheriv("aes-256-gcm", key, Buffer.from(vault.iv, "base64"));
-  decipher.setAuthTag(Buffer.from(vault.tag, "base64"));
+  const key = deriveKey(pass, fromB64(vault.salt));
+  const decipher = createDecipheriv("aes-256-gcm", key, fromB64(vault.iv));
+  decipher.setAuthTag(fromB64(vault.tag));
   const out = Buffer.concat([
-    decipher.update(Buffer.from(vault.data, "base64")),
-    decipher.final(),
+    toBytes(decipher.update(fromB64(vault.data))),
+    toBytes(decipher.final()),
   ]);
   return JSON.parse(out.toString("utf8")) as Record<string, string>;
 }
@@ -205,7 +217,7 @@ export function promptHidden(text: string): string {
   const CR = 0x0d;
   const DEL = 0x7f;
 
-  const buf = Buffer.alloc(1);
+  const buf = new Uint8Array(1);
   let out = "";
   try {
     for (;;) {
@@ -257,7 +269,7 @@ function restoreTty(raw: boolean, opened: boolean): void {
 export function promptLine(text: string, fallback = ""): string {
   process.stdout.write(text);
   const fs = require("node:fs") as typeof import("node:fs");
-  const buf = Buffer.alloc(1);
+  const buf = new Uint8Array(1);
   let out = "";
   for (;;) {
     let n = 0;
@@ -267,7 +279,7 @@ export function promptLine(text: string, fallback = ""): string {
       break;
     }
     if (n === 0) break;
-    const ch = buf.toString("utf8");
+    const ch = String.fromCharCode(buf[0]!);
     if (ch === "\n") break;
     if (ch === "\r") continue;
     out += ch;
