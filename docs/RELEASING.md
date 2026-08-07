@@ -77,8 +77,15 @@ SHA256SUMS
 addgp-lite-1.0.0-<host>.tar.gz         ← the hand-over tarball
 ```
 
-The tarball contains the binary, its checksum, `install.sh`, `README.md`, `LICENSE` and
-`SELF_COMPLIANCE.md`.
+The tarball contains the binary, its checksum, `install.sh`, `README.md`, `LICENSE`,
+`DISCLAIMER.md` and `SELF_COMPLIANCE.md`.
+
+The script extracts the finished tarball into a temporary directory and runs
+`sha256sum -c` against it before reporting success. That check exists because the binary
+is renamed to `addgp-lite` inside the tarball: if the checksum file still named the
+build artifact, the verification command a recipient is told to run would fail on a
+perfectly good download. **A tarball that does not verify against its own checksum file
+exits non-zero and produces no release.**
 
 ---
 

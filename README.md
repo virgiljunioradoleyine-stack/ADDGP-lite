@@ -441,7 +441,9 @@ the anti-hallucination protocol, and the design decisions you might disagree wit
 ## Licence
 
 **MIT.** Every feature ships to everyone, forever. Fork it, ship it, teach with it, build
-on it.
+on it. What this tool is — and specifically what it is not — is set out in
+[DISCLAIMER.md](DISCLAIMER.md), which is separate from the licence and modifies nothing
+in it.
 
 If it is useful, we would like to know — `addgp-lite share` produces a receipt containing
 counts only: no code, no file paths, no finding text, no repository name, no identifiers.

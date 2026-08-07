@@ -75,7 +75,7 @@ cp "$HERE/$BIN" "$DEST/$BIN" || die "Could not copy to $DEST — no root is need
 chmod +x "$DEST/$BIN"
 ok "Installed to $DEST/$BIN"
 
-for f in README.md SELF_COMPLIANCE.md LICENSE; do
+for f in README.md SELF_COMPLIANCE.md LICENSE DISCLAIMER.md; do
   [ -f "$HERE/$f" ] && cp "$HERE/$f" "$DEST/../share/addgp-lite/$f" 2>/dev/null || true
 done
 

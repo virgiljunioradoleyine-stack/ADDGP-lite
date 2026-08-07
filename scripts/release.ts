@@ -5,7 +5,8 @@
  *
  * §1.1 platforms: darwin-arm64, darwin-x64, linux-x64, linux-arm64, windows-x64.
  */
-import { mkdirSync, existsSync, statSync } from "node:fs";
+import { mkdirSync, mkdtempSync, existsSync, readdirSync, rmSync, statSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 const root = join(import.meta.dir, "..");
@@ -64,16 +65,37 @@ if (host) {
     if (existsSync(from)) await Bun.write(join(stage, to), Bun.file(from));
   };
   await copy(join(outDir, host.file), "addgp-lite");
-  await copy(join(outDir, `${host.file}.sha256`), "addgp-lite.sha256");
+  // The binary is renamed inside the tarball, so its checksum file must name it the
+  // same way — otherwise `shasum -a 256 -c addgp-lite.sha256`, the exact command a
+  // recipient is told to run, fails on a perfectly good download.
+  await Bun.write(join(stage, "addgp-lite.sha256"), `${host.sha}  addgp-lite\n`);
   await copy(join(root, "install.sh"), "install.sh");
   await copy(join(root, "README.md"), "README.md");
   await copy(join(root, "LICENSE"), "LICENSE");
+  await copy(join(root, "DISCLAIMER.md"), "DISCLAIMER.md");
   await copy(join(root, "SELF_COMPLIANCE.md"), "SELF_COMPLIANCE.md");
 
   Bun.spawnSync({ cmd: ["chmod", "+x", join(stage, "addgp-lite"), join(stage, "install.sh")] });
   const tar = join(outDir, `addgp-lite-${pkg.version}-${host.label}.tar.gz`);
   Bun.spawnSync({ cmd: ["tar", "-czf", tar, "-C", stage, "."], stdout: "inherit", stderr: "inherit" });
+  rmSync(stage, { recursive: true, force: true });
   console.log(`\n▸ tarball ${tar}`);
+
+  // Check the tarball the way a recipient will, not the way we built it.
+  const probe = mkdtempSync(join(tmpdir(), "addgp-release-"));
+  const untar = Bun.spawnSync({ cmd: ["tar", "xzf", tar, "-C", probe] });
+  const verify = Bun.spawnSync({ cmd: ["sha256sum", "-c", "addgp-lite.sha256"], cwd: probe });
+  rmSync(probe, { recursive: true, force: true });
+  if (untar.exitCode !== 0 || verify.exitCode !== 0) {
+    console.error(`  ✗ the tarball does not verify against its own checksum file — release blocked`);
+    process.exit(1);
+  }
+  console.log(`  ✓ extracts and verifies against its own checksum`);
+}
+
+// bun sometimes drops a source map beside the binary; it is not a release artifact.
+for (const stray of readdirSync(outDir)) {
+  if (stray.endsWith(".map")) rmSync(join(outDir, stray), { force: true });
 }
 
 /* checksum manifest */
