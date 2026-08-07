@@ -113,6 +113,7 @@ export function entropyHits(text: string): DetectorHit[] {
     if (/^[0-9]+$/.test(v)) continue;
     if (/^(?:[a-z]+[_-])+[a-z]+$/i.test(v)) continue; // snake/kebab words
     if (/^(?:[a-z][a-z0-9]*)(?:[A-Z][a-z0-9]*){1,}$/.test(v)) continue; // camelCase
+    if (isPathOfWords(v)) continue; // a URL path or an import path, not a secret
     const isHex = /^[0-9a-fA-F]+$/.test(v);
     const h = entropy(v);
     const threshold = isHex ? ENTROPY_THRESHOLD_HEX : ENTROPY_THRESHOLD_B64;
@@ -126,6 +127,22 @@ export function entropyHits(text: string): DetectorHit[] {
     });
   }
   return hits;
+}
+
+/**
+ * `github.com/some-org/some-repo` and `@scope/pkg-name/sub-path` are long,
+ * mixed-case, and score as high entropy — but they are paths, not secrets.
+ *
+ * Deliberately narrow: every segment must be alphabetic words joined by
+ * separators. A base64 blob with `/` in it has digits interleaved through its
+ * segments and is still caught, and so is a token in a URL query string, which
+ * is the leak vector that actually matters.
+ */
+function isPathOfWords(v: string): boolean {
+  if (!v.includes("/")) return false;
+  const segments = v.split("/").filter(Boolean);
+  if (segments.length < 2) return false;
+  return segments.every((s) => /^[A-Za-z]+(?:[-_.][A-Za-z]+)*\d{0,4}$/.test(s));
 }
 
 function runRules(text: string, rules: Rule[]): DetectorHit[] {

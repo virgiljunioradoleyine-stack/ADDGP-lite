@@ -19,6 +19,24 @@ export const BRAND = {
 } as const;
 
 /**
+ * Who maintains this, and why.
+ *
+ * Kept to one line wherever it is rendered. A community tool covered in company
+ * branding gets forked without the branding; a community tool that is visibly
+ * well maintained gets contributed to. Stewardship is the attribution.
+ */
+export const STEWARD = {
+  org: "ViradoTech",
+  url: "https://github.com/virgiljunioradoleyine-stack/addgp-lite",
+  mission:
+    "To build the ethical governance backbone that makes Africa's AI economy auditable, " +
+    "lawful, and sovereign — eliminating the administrative debt that stops African " +
+    "institutions from growing.",
+  /** Rendered under the disclaimer on reports and in `--help`. */
+  line: "Free and open source, maintained by ViradoTech. No licence, no account, no telemetry.",
+} as const;
+
+/**
  * The only host this tool may ever contact. Enforced by the egress gate.
  *
  * All three model seats are reached through OpenRouter on a single key, so the
@@ -35,6 +53,6 @@ export const OPENROUTER = {
   models: "https://openrouter.ai/api/v1/models",
   keyInfo: "https://openrouter.ai/api/v1/key",
   /** Attribution headers OpenRouter asks integrations to send. */
-  referer: "https://github.com/addgp/addgp-lite",
+  referer: "https://github.com/virgiljunioradoleyine-stack/addgp-lite",
   title: "ADDGP-Lite",
 } as const;

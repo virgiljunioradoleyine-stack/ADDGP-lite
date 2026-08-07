@@ -1,4 +1,4 @@
-import { BRAND } from "../brand.ts";
+import { BRAND, STEWARD } from "../brand.ts";
 import { color, log } from "../util/log.ts";
 
 export function heading(text: string): void {
@@ -69,7 +69,7 @@ export function info(text: string): string {
 
 /** The permanent footer of §0: on every report and every --help. */
 export function disclaimerLine(): string {
-  return color.gray(`  ${BRAND.disclaimerShort}`);
+  return color.gray(`  ${BRAND.disclaimerShort}\n  ${STEWARD.line}`);
 }
 
 export function bytes(n: number): string {

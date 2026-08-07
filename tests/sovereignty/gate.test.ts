@@ -163,4 +163,19 @@ describe("detectors — false positives kept out of the way", () => {
   test("a number that fails Luhn is not a card number", () => {
     expect(findPii("4111111111111112").filter((h) => h.rule === "card_number")).toEqual([]);
   });
+
+  test("a long URL or import path is not a high-entropy secret", () => {
+    // Regression: these tripped the entropy rule and aborted runs on clean code.
+    expect(findSecrets("https://github.com/virgiljunioradoleyine-stack/addgp-lite")).toEqual([]);
+    expect(findSecrets('import x from "@company-name/some-package/deep/sub-path";')).toEqual([]);
+    expect(findSecrets("https://www.dataprotection.org.gh/data-protection/data-protection-acts-2012")).toEqual([]);
+    expect(findSecrets("registry.example.org/organisation-name/repository-name")).toEqual([]);
+  });
+
+  test("but a secret that happens to contain a slash is still caught", () => {
+    // base64 uses "/", so the path exemption must not become a bypass
+    expect(findSecrets("aWQ9MTIzNDU2Nzg5/c2VjcmV0S2V5VmFsdWU5OTk=").length).toBeGreaterThan(0);
+    expect(findSecrets("https://api.example.com/v1?token=aGVsbG8gd29ybGQgc2VjcmV0IHRva2Vu").length).toBeGreaterThan(0);
+    expect(findSecrets("AKIAIOSFODNN7EXAMPLE").length).toBeGreaterThan(0);
+  });
 });

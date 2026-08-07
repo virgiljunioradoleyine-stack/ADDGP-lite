@@ -1,4 +1,4 @@
-import { BRAND } from "../brand.ts";
+import { BRAND, STEWARD } from "../brand.ts";
 import type { ScanResult } from "../schemas/index.ts";
 
 /**
@@ -137,7 +137,8 @@ export function renderSarif(result: ScanResult, repoRoot: string): unknown {
           driver: {
             name: BRAND.display,
             version: BRAND.version,
-            informationUri: "https://github.com/addgp/addgp-lite",
+            organization: STEWARD.org,
+            informationUri: STEWARD.url,
             rules,
             properties: {
               disclaimer: BRAND.disclaimer,

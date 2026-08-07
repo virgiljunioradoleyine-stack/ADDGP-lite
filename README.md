@@ -17,6 +17,26 @@ That is the whole install.
 
 ---
 
+> **To build the ethical governance backbone that makes Africa's AI economy auditable,
+> lawful, and sovereign — eliminating the administrative debt that stops African
+> institutions from growing.**
+>
+> — ViradoTech, who maintain this
+
+ADDGP-Lite is free, MIT licensed, and open source. There is no paid tier, no account, no
+licence key, and no plan for any of them. It is the first piece of that backbone, and it
+is deliberately the piece you can hold in your hand and check for yourself.
+
+We also build it this way because it is the argument. ViradoTech builds AI agents for
+enterprises, and an enterprise's first question is always the same: *what does it do with
+our data, and can you prove it?* This tool is our answer written as code — an agent
+pipeline that is auditable end to end, that cannot phone home, that refuses to send what
+it should not, and that tells you plainly what it did not check. If we would not ship
+that standard to a student in Accra for free, we would have no business selling it to a
+bank.
+
+---
+
 ## The five laws
 
 1. **BYOK, zero margin, zero gating.** No embedded keys. No free tier, no paid tier, no feature
@@ -465,9 +485,42 @@ in any mode**.
 
 ---
 
+## Contributing
+
+**The most valuable contribution is a region pack for a jurisdiction you actually know.**
+You do not need to be a lawyer, and you do not need to write TypeScript — a pack is a
+JSON file describing where the law lives and what a careful researcher should watch out
+for in your country.
+
+If you have ever had to work out what your country's data protection law requires of a
+piece of software, you already know something this project needs. See
+[CONTRIBUTING.md](CONTRIBUTING.md).
+
+Also useful, and small:
+
+- **One line in `data/pii-lexicon.json`** for your country's national identifier — the
+  way Ghana has `ghana_card` and Nigeria has `bvn`. It immediately improves detection for
+  every developer in your country.
+- **A framework's public API names** in `src/sovereignty/allowlist.ts`, if we do not know
+  the framework you use. Their absence costs analysis quality for everyone using it.
+- **An issue when a law changes.** No automated freshness check beats someone who works
+  in the jurisdiction.
+
+Whatever lands here ships to everyone who ever runs this binary.
+
+## Security
+
+If something left the machine that should not have, please report it privately rather
+than in a public issue — see [SECURITY.md](SECURITY.md).
+
 ## Licence
 
-MIT. Every feature ships to everyone.
+MIT. Every feature ships to everyone, forever. Fork it, ship it, teach with it, build on
+it. If it is useful, we would like to know — `addgp-lite share` produces a receipt with
+no code, no paths and no identifiers in it, and what you do with that file is entirely
+your decision.
+
+Maintained by [ViradoTech](https://github.com/virgiljunioradoleyine-stack).
 
 ---
 

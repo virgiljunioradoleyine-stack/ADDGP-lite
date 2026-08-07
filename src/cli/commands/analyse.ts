@@ -1,6 +1,6 @@
 import { existsSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
-import { BRAND } from "../../brand.ts";
+import { BRAND, STEWARD } from "../../brand.ts";
 import { loadConfig } from "../../config/index.ts";
 import { paths as makePaths, readJsonl, writeJson, writeOut, readJson , readBytes } from "../../util/paths.ts";
 import { log, UserError, color } from "../../util/log.ts";
@@ -931,6 +931,8 @@ ${roi.headline}
 
 _Counts only. No code, no file paths, no finding text, no repository name, no identifiers.
 Signature: \`${receipt.signature}\`._
+
+_Produced by [${BRAND.display}](${STEWARD.url}) — ${STEWARD.line}_
 
 _${BRAND.disclaimerShort}_
 `;

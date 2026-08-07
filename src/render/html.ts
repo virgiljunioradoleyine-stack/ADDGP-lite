@@ -1,4 +1,4 @@
-import { BRAND } from "../brand.ts";
+import { BRAND, STEWARD } from "../brand.ts";
 
 /**
  * Markdown → self-contained HTML. No CDN, no external font, no script: this file
@@ -19,7 +19,7 @@ export function renderHtml(markdown: string, title: string): string {
 <main>
 ${mdToHtml(markdown)}
 </main>
-<footer><p>${escapeHtml(BRAND.disclaimer)}</p></footer>
+<footer><p>${escapeHtml(BRAND.disclaimer)}</p><p>${escapeHtml(STEWARD.line)}</p></footer>
 </body>
 </html>
 `;
