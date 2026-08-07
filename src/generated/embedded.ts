@@ -3,7 +3,7 @@
 // Run `bun run embed` after changing any of those.
 
 export const EMBED_VERSION = "1.0.0";
-export const EMBED_BUILT_AT = "2026-08-06";
+export const EMBED_BUILT_AT = "2026-08-07";
 
 export interface EmbeddedPrompt {
   id: string;

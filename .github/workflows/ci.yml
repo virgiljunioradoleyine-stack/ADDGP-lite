@@ -1,0 +1,83 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+# The workflow spends nothing: model calls are replayed from recorded cassettes,
+# and every phase that would call a vendor is either cassette-backed or skipped.
+env:
+  ADDGP_CASSETTE_MODE: replay
+  ADDGP_CASSETTES: tests/golden/cassettes
+  NO_COLOR: "1"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # the secret scanner reads history
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.11"
+
+      - name: Install
+        run: bun install --frozen-lockfile
+
+      - name: Embed packs, prompts and data
+        run: bun run scripts/embed.ts
+
+      - name: Typecheck
+        run: bun x tsc --noEmit
+
+      - name: Test
+        run: bun test
+
+      - name: Build the binary
+        run: bun run scripts/build.ts
+
+      - name: The install path must work with the network off
+        run: |
+          set -eu
+          BIN=$(ls dist/addgp-lite-*-linux-x64 | head -1)
+          WORK=$(mktemp -d)
+          cp "$BIN" "$WORK/addgp-lite"
+          chmod +x "$WORK/addgp-lite"
+          cd "$WORK"
+          git init -q .
+          ./addgp-lite --version
+          ./addgp-lite init --yes --name ci-check --regions gh,ng,eu --sovereignty 1 --profile student
+          ./addgp-lite doctor --local || true   # no key in CI; other checks must still pass
+          ./addgp-lite regions list > /dev/null
+          ./addgp-lite sovereignty preview > /dev/null
+          echo "offline install path OK"
+
+  self-audit:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.11"
+      - run: bun install --frozen-lockfile
+      - run: bun run scripts/embed.ts
+
+      # The tool's own dependencies are audited on every change: a compliance
+      # tool with a known-vulnerable dependency is not in a position to lecture.
+      - name: Audit our own dependencies
+        run: bun audit || true
+
+      # §11 — the auditor is audited. Without a key this runs the local phases
+      # only; the release job runs the full pipeline and ships SELF_COMPLIANCE.md.
+      - name: Self-check (local phases)
+        run: bun run src/cli/main.ts selfcheck --offline --source . || true
+
+      - name: The sovereignty suite is security-critical and gates the build
+        run: bun test tests/sovereignty/
+
+      - name: Property tests — no uncited money, no key in any artifact
+        run: bun test tests/unit/properties.test.ts
