@@ -1,0 +1,104 @@
+name: Release
+
+# Runs entirely on GitHub's servers — no local terminal, no local Bun install, nothing
+# to build by hand. Trigger it from the Actions tab: Actions → Release → Run workflow →
+# type a version like 1.0.0 → Run.
+#
+# What it does NOT do: sign the binaries. Minisign needs a private key, and a private
+# key that lives in a GitHub Actions secret is a private key this project's maintainer
+# does not solely control — anyone with repo admin access could extract or rotate it
+# without you knowing. Signing stays a manual, local step (see docs/GO_LIVE.md §3-4).
+# This workflow ships checksummed, unsigned binaries, exactly as documented in the
+# release notes.
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release, e.g. 1.0.0 (must match package.json and src/brand.ts)"
+        required: true
+        type: string
+      draft:
+        description: "Create as a draft (recommended — review before publishing)"
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.11"
+
+      - name: Install
+        run: bun install --frozen-lockfile
+
+      - name: Version must match what's tagged
+        run: |
+          set -eu
+          PKG=$(node -p "require('./package.json').version")
+          if [ "$PKG" != "${{ inputs.version }}" ]; then
+            echo "package.json says $PKG, workflow input says ${{ inputs.version }} — bump package.json and src/brand.ts first."
+            exit 1
+          fi
+
+      - name: Typecheck and test
+        run: |
+          bun run scripts/embed.ts
+          bun x tsc --noEmit
+          bun test
+
+      - name: Build all five platform binaries
+        run: bun run release
+
+      - name: List what was built
+        run: ls -la release/
+
+      - name: Tag
+        run: |
+          git tag "v${{ inputs.version }}"
+          git push origin "v${{ inputs.version }}"
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -eu
+          NOTES="docs/release-notes/v${{ inputs.version }}.md"
+          if [ ! -f "$NOTES" ]; then
+            echo "No $NOTES — write it before releasing (see docs/RELEASING.md)."
+            exit 1
+          fi
+          DRAFT_FLAG=""
+          if [ "${{ inputs.draft }}" = "true" ]; then DRAFT_FLAG="--draft"; fi
+          gh release create "v${{ inputs.version }}" \
+            --title "ADDGP-Lite ${{ inputs.version }}" \
+            --notes-file "$NOTES" \
+            $DRAFT_FLAG \
+            release/addgp-lite-*-darwin-arm64 \
+            release/addgp-lite-*-darwin-arm64.sha256 \
+            release/addgp-lite-*-darwin-x64 \
+            release/addgp-lite-*-darwin-x64.sha256 \
+            release/addgp-lite-*-linux-x64 \
+            release/addgp-lite-*-linux-x64.sha256 \
+            release/addgp-lite-*-linux-arm64 \
+            release/addgp-lite-*-linux-arm64.sha256 \
+            release/addgp-lite-*-windows-x64.exe \
+            release/addgp-lite-*-windows-x64.exe.sha256 \
+            release/SHA256SUMS
+
+      - name: Summary
+        run: |
+          echo "## Release v${{ inputs.version }} created" >> "$GITHUB_STEP_SUMMARY"
+          if [ "${{ inputs.draft }}" = "true" ]; then
+            echo "It's a **draft** — go to Releases, check the notes and assets, then click Publish." >> "$GITHUB_STEP_SUMMARY"
+          fi
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "These binaries are **unsigned** — checksums only. Signing is a manual step on a maintainer's own machine (docs/GO_LIVE.md §3-4), never in CI, because a signing key CI could reach is a key CI could leak." >> "$GITHUB_STEP_SUMMARY"

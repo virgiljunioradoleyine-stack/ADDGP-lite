@@ -1,29 +1,32 @@
 # Go live
 
-Everything that has to happen on **your** machine, in order. Nothing here can be done from
-a CI container or an agent session — each step either needs a key, a private signing key,
-or repository-owner rights.
+Two kinds of step here, marked as they come up:
+
+- **🌐 Browser only** — a page you click on. No terminal, no install.
+- **⌨️ Needs a terminal** — cannot be done from a button. If you don't have a computer set
+  up for development and don't want one, use
+  **[GitHub Codespaces](https://github.com/codespaces)**: open the repo, click **Code →
+  Codespaces → Create codespace**, and you get a terminal running in a browser tab with
+  the repo already cloned and Bun installable in one line. Nothing to install on your own
+  machine, and it goes away when you close the tab.
 
 Roughly 30 minutes, most of it waiting for builds.
 
 ---
 
-## 1. Rotate the OpenRouter key
+## 1. 🌐 Rotate the OpenRouter key
 
 If a key has ever been pasted into a chat, a terminal recording, a screenshot or an issue,
 it is compromised regardless of whether the message was deleted. Delete it at
-<https://openrouter.ai/keys> and mint a new one.
-
-```bash
-addgp-lite keys set     # stored 0600, local only
-```
+<https://openrouter.ai/keys> and mint a new one. Keep it somewhere for step 2.
 
 ---
 
-## 2. Run the tool against itself
+## 2. ⌨️ Run the tool against itself
 
 This is the first live end-to-end run — the four model-facing phases have never touched a
-real key.
+real key. If you're on Codespaces, `bun` is not preinstalled — run
+`curl -fsSL https://bun.sh/install | bash && source ~/.bashrc` first.
 
 ```bash
 git clone https://github.com/virgiljunioradoleyine-stack/ADDGP-lite
@@ -58,18 +61,22 @@ git add SELF_COMPLIANCE.md tests/golden/cassettes && git commit
 
 ---
 
-## 3. Create the signing keypair
+## 3. ⌨️ Create the signing keypair
 
 ```bash
+# install minisign first if it's not there: apt/brew/etc. have it, or see
+# https://jedisct1.github.io/minisign/
 minisign -G -p minisign.pub -s minisign.key
 ```
 
-**Generate this yourself, on your own machine, and nowhere else.** A signature answers one
-question — *did this file come from the person it claims to come from?* If the private key
-was generated inside a container, pasted into a chat, or handled by anything other than
-you, the answer becomes "someone, possibly you" and the signature stops meaning anything.
-This is the one step in this document that cannot be delegated, and it is deliberately not
-automated.
+**Generate this yourself, somewhere you control, and nowhere else — not in a GitHub
+Actions runner, not pasted into a chat.** A signature answers one question — *did this
+file come from the person it claims to come from?* If the private key was ever handled by
+anything other than you, the answer becomes "someone, possibly you," and the signature
+stops meaning anything. This is the one step in this document that must never be
+automated. A Codespace is fine for this — it is still something only you controlled the
+session for — but download `minisign.key` out of it afterward and delete the Codespace;
+don't leave a private key sitting in a cloud dev environment indefinitely.
 
 - `minisign.key` → password manager or encrypted volume. **Never committed.** If it leaks:
   revoke publicly, rotate, re-sign.
@@ -84,88 +91,54 @@ echo test > /tmp/t && minisign -Sm /tmp/t -s minisign.key && minisign -Vm /tmp/t
 
 ---
 
-## 4. Build and sign
+## 4. 🌐 Build and publish (draft) from the Actions tab
+
+No terminal for this step — `.github/workflows/release.yml` does the whole build in the
+cloud:
+
+1. Go to **Actions → Release → Run workflow**.
+2. Version: `1.0.0`. Leave **draft** checked.
+3. Run it. Takes a few minutes — it typechecks, tests, cross-compiles all five platforms,
+   verifies the tarball extracts and checksums correctly, tags `v1.0.0`, and opens a
+   **draft** release with the binaries and `SHA256SUMS` attached.
+
+It publishes nothing on its own — a draft is invisible to the public until you hit
+**Publish** on the release page. That review step is intentional.
+
+**This does not sign the binaries.** Signing needs `minisign.key`, and that key must never
+exist inside a CI runner — anyone with write access to the repo could trigger a workflow
+and exfiltrate a secret it has access to, which defeats the entire point of a signature.
+Signing stays the one manual step, below.
+
+---
+
+## 5. ⌨️ Sign the draft's binaries (optional, needs step 3's key)
+
+Skip this and publish unsigned if you haven't done step 3 yet — the release notes already
+say plainly that unsigned binaries are checksum-only, and you can sign a later release once
+you have `minisign.key` set up. If you do have it:
 
 ```bash
-bun run release
-```
-
-Five platforms, checksums, `SHA256SUMS`, and the hand-over tarball. The script extracts the
-tarball and verifies it against its own checksum file before reporting success; if that
-fails it exits non-zero and there is no release.
-
-```bash
-cd release
+# download the draft's binaries from the release page, then, next to minisign.key:
 for f in addgp-lite-1.0.0-*; do
-  case "$f" in *.sha256|*.minisig) continue;; esac
-  minisign -Sm "$f" -s ~/path/to/minisign.key
+  case "$f" in *.sha256) continue;; esac
+  minisign -Sm "$f" -s minisign.key
 done
 ```
 
-Then check it the way a stranger will — from the tarball, not the build directory:
-
-```bash
-cd /tmp && rm -rf v && mkdir v && cd v
-tar xzf ~/ADDGP-lite/release/addgp-lite-1.0.0-*.tar.gz
-shasum -a 256 -c addgp-lite.sha256
-./install.sh && addgp-lite --version
-
-mkdir demo && cd demo && git init -q .
-env -u HTTPS_PROXY -u HTTP_PROXY addgp-lite init --yes --regions gh,ng,eu
-env -u HTTPS_PROXY -u HTTP_PROXY addgp-lite doctor --local
-env -u HTTPS_PROXY -u HTTP_PROXY addgp-lite sovereignty preview
-```
-
-All three offline commands must work with no network. If any reaches for the network, that
-is a release blocker — it breaks the Accra-first promise, which is the whole point.
+Edit the draft release on the page: upload each `.minisig` file and `minisign.pub`, and in
+`docs/release-notes/v1.0.0.md` swap the "these binaries are not signed" paragraph for the
+verification command, then update the draft's notes to match.
 
 ---
 
-## 5. Make the repository public
+## 6. 🌐 Publish
 
-**Settings → General → Danger Zone → Change visibility → Public.**
+On the release page: check the assets are all there (five binaries, five `.sha256`,
+`SHA256SUMS`, and `.minisig` files if you signed), then click **Publish release**.
 
-Before you click it, two settings worth changing:
-
-- **Rename the default branch.** It is currently `claude/software-build-sublwz`, which
-  reads like an abandoned agent branch. Settings → Branches → pencil icon → `main`. GitHub
-  redirects the old name, so nothing breaks.
-- **Confirm the sidebar says "MIT license".** It should now that `LICENSE` is pure MIT
-  text. If it still says "Other", something has been appended to it again.
-
-Then, on the repository home page (right sidebar, ⚙ next to *About*):
-
-- **Description:** *Describe your system in plain English, pick your regions, get the law
-  that applies and the gaps in your code. Your code never leaves your machine readable.*
-- **Topics:** `compliance` `privacy` `gdpr` `data-protection` `africa` `ghana` `nigeria`
-  `sovereignty` `cli` `openrouter` `ai-governance` `bun` `typescript`
-- Tick **Releases**, untick **Packages** and **Environments**.
-
-Discussions and Issues are already enabled.
-
----
-
-## 6. Publish the release
-
-```bash
-gh release create v1.0.0 \
-  --title "ADDGP-Lite 1.0.0" \
-  --notes-file docs/release-notes/v1.0.0.md \
-  release/addgp-lite-1.0.0-* \
-  release/SHA256SUMS \
-  minisign.pub
-```
-
-If you signed in step 3, delete the "**These binaries are not signed**" paragraph from
-`docs/release-notes/v1.0.0.md` first and replace it with the verification command:
-
-```bash
-minisign -Vm addgp-lite-1.0.0-<platform> -P <contents of minisign.pub>
-```
-
-Then **download from the release page** — not from `release/` — and re-run the checksum and
-the offline path. A signature over the file you meant to upload proves nothing about the
-file that actually uploaded.
+**Repository visibility, the default branch name, and the About section are already
+done** — you made the repo public and set those already. Nothing left to check there.
 
 ---
 
