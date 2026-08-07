@@ -80,9 +80,9 @@ const cfg = ConfigSchema.parse({
   project: { name: "props", profile: "student", description_file: ".addgp/description.md" },
   regions: ["gh"],
   models: {
-    research: { provider: "openrouter", id: "perplexity/sonar-pro" },
-    security: { provider: "openrouter", id: "openai/gpt-4o" },
-    architect: { provider: "openrouter", id: "anthropic/claude-sonnet-4.5" },
+    research: { provider: "openrouter", id: "perplexity/sonar-pro-search" },
+    security: { provider: "openrouter", id: "openai/gpt-5.6-sol" },
+    architect: { provider: "openrouter", id: "anthropic/claude-opus-5" },
   },
 });
 

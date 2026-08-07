@@ -21,9 +21,9 @@ data_residency:
   users_in: []
   data_stored_in: []
 models:
-  research: { provider: openrouter, id: perplexity/sonar-pro }
-  security: { provider: openrouter, id: openai/gpt-4o }
-  architect: { provider: openrouter, id: anthropic/claude-sonnet-4.5 }
+  research: { provider: openrouter, id: perplexity/sonar-pro-search }
+  security: { provider: openrouter, id: openai/gpt-5.6-sol }
+  architect: { provider: openrouter, id: anthropic/claude-opus-5 }
 sovereignty:
   level: 1
   keep_comments: false
@@ -31,7 +31,7 @@ sovereignty:
   never_send: []
   verbatim_allowlist: []
 budget:
-  per_run_usd: { research: 3, security: 5, architect: 5 }
+  per_run_usd: { research: 6, security: 10, architect: 10 }
   on_exceed: stop
 scan:
   include:

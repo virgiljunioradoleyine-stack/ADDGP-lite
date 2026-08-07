@@ -10,9 +10,9 @@ data_residency:
   users_in: [gh]
   data_stored_in: [eu]
 models:
-  research: { provider: openrouter, id: perplexity/sonar-pro }
-  security: { provider: openrouter, id: openai/gpt-4o }
-  architect: { provider: openrouter, id: anthropic/claude-sonnet-4.5 }
+  research: { provider: openrouter, id: perplexity/sonar-pro-search }
+  security: { provider: openrouter, id: openai/gpt-5.6-sol }
+  architect: { provider: openrouter, id: anthropic/claude-opus-5 }
 sovereignty:
   level: 1
   keep_comments: false

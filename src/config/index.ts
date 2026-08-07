@@ -55,14 +55,14 @@ export const ConfigSchema = z.object({
     .object({
       per_run_usd: z
         .object({
-          research: z.number().nonnegative().default(5),
-          security: z.number().nonnegative().default(8),
-          architect: z.number().nonnegative().default(8),
+          research: z.number().nonnegative().default(8),
+          security: z.number().nonnegative().default(15),
+          architect: z.number().nonnegative().default(15),
         })
-        .default({ research: 5, security: 8, architect: 8 }),
+        .default({ research: 8, security: 15, architect: 15 }),
       on_exceed: z.enum(["stop", "warn", "degrade"]).default("stop"),
     })
-    .default({ per_run_usd: { research: 5, security: 8, architect: 8 }, on_exceed: "stop" }),
+    .default({ per_run_usd: { research: 8, security: 15, architect: 15 }, on_exceed: "stop" }),
   scan: z
     .object({
       include: z.array(z.string()).default(["**/*"]),
@@ -139,9 +139,9 @@ export function defaultConfig(name: string, regions: string[]): Config {
     frameworks: ["owasp-llm-top10"],
     data_residency: { users_in: [], data_stored_in: [] },
     models: {
-      research: { provider: "openrouter", id: "perplexity/sonar-pro" },
-      security: { provider: "openrouter", id: "openai/gpt-4o" },
-      architect: { provider: "openrouter", id: "anthropic/claude-sonnet-4.5" },
+      research: { provider: "openrouter", id: "perplexity/sonar-pro-search" },
+      security: { provider: "openrouter", id: "openai/gpt-5.6-sol" },
+      architect: { provider: "openrouter", id: "anthropic/claude-opus-5" },
     },
     sovereignty: {
       level: 1,
@@ -150,7 +150,10 @@ export function defaultConfig(name: string, regions: string[]): Config {
       never_send: [],
       verbatim_allowlist: [],
     },
-    budget: { per_run_usd: { research: 5, security: 8, architect: 8 }, on_exceed: "stop" },
+    // Sol and Opus 5 cost more per token than the models these budgets were sized for
+    // (gpt-4o, claude-sonnet-4.5) — raised so a real run doesn't hit `on_exceed: stop`
+    // partway through phase 4 or 5. `scan --dry-run` still projects actual spend first.
+    budget: { per_run_usd: { research: 8, security: 15, architect: 15 }, on_exceed: "stop" },
     scan: {
       include: ["**/*"],
       exclude: [
