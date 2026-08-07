@@ -1,6 +1,6 @@
 # 👋 Welcome — start here
 
-**Paste this as the first post in Discussions → Announcements, pinned.**
+
 
 ---
 
