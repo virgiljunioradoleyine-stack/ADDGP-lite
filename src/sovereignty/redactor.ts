@@ -52,7 +52,18 @@ const LITERAL_PASSTHROUGH = new Set([
   "Strict-Transport-Security", "Content-Security-Policy", "X-Frame-Options",
   "SameSite", "Lax", "Strict", "None", "httpOnly", "secure",
   "asc", "desc", "ASC", "DESC", "id", "uuid", "created_at", "updated_at",
+  // Chat roles: protocol vocabulary, and phase 4 needs them to reason about
+  // where untrusted input lands in a prompt.
+  "system", "user", "assistant", "tool", "function", "developer",
 ]);
+
+/**
+ * Public model identifiers. Which inference vendor and model a system calls is a
+ * fact the audit turns on — it decides the transfer analysis and the AI Act
+ * classification — and it is not the user's IP.
+ */
+const MODEL_ID = /^(?:gpt|o[134]|claude|gemini|llama|mistral|mixtral|command|sonar|deepseek|qwen|grok|phi|nova|titan|jamba)[\w.:-]*$/i;
+const VENDOR_MODEL_ID = /^(?:openai|anthropic|google|meta-llama|mistralai|perplexity|cohere|deepseek|qwen|x-ai|amazon|microsoft)\/[\w.:-]+$/i;
 
 const SQL_START = /^\s*(?:SELECT|INSERT\s+INTO|UPDATE|DELETE\s+FROM|CREATE\s+(?:TABLE|INDEX|POLICY|VIEW|SCHEMA|FUNCTION)|ALTER\s+TABLE|DROP\s+TABLE|GRANT|REVOKE|WITH\s+\w+\s+AS)\b/i;
 const PROMPT_HINT = /\b(?:you are|your task|assistant|system prompt|respond with|do not|must not|instructions?:|answer the|the user('s)? )\b/i;
@@ -64,6 +75,7 @@ const PROMPT_HINT = /\b(?:you are|your task|assistant|system prompt|respond with
 export function classifyLiteral(value: string): { placeholder: string; dropped: boolean } {
   if (findSecrets(value).length > 0) return { placeholder: "<dropped:secret>", dropped: true };
   if (LITERAL_PASSTHROUGH.has(value)) return { placeholder: value, dropped: false };
+  if (MODEL_ID.test(value) || VENDOR_MODEL_ID.test(value)) return { placeholder: value, dropped: false };
   if (value.length === 0) return { placeholder: "", dropped: false };
 
   if (findPii(value).some((h) => h.rule === "email")) return { placeholder: "<str:email>", dropped: false };
@@ -191,6 +203,7 @@ export function redactFile(
   source: string,
   opts: RedactOptions,
 ): RedactedFile {
+  const dirOfFile = realPath.includes("/") ? realPath.slice(0, realPath.lastIndexOf("/")) : "";
   const ext = realPath.slice(realPath.lastIndexOf("."));
   const lang = langForExt(ext);
   const threshold = opts.numberThreshold ?? 1000;
@@ -260,7 +273,7 @@ export function redactFile(
       case "string": {
         // Import specifiers: a public package name is a fact the model needs;
         // a relative path is IP and goes through the path map.
-        const spec = importSpecifier(tokens, i, lang, t.value, opts);
+        const spec = importSpecifier(tokens, i, lang, t.value, opts, dirOfFile);
         if (spec !== null) {
           out.push(spec);
           break;
@@ -269,7 +282,7 @@ export function redactFile(
         // A literal that names a symbol — `.from("users")`, `.select("email")` —
         // must map to the SAME pseudonym as the schema, or the model cannot join
         // the query to the table it reads.
-        const asSymbols = symbolLiteral(t.value, lang, opts);
+        const asSymbols = symbolLiteral(t.value, lang, opts, literalKind(tokens, i));
         if (asSymbols !== null) {
           stats.identifiers_mapped++;
           out.push(asSymbols);
@@ -331,6 +344,7 @@ function importSpecifier(
   lang: Lang,
   value: string,
   opts: RedactOptions,
+  fromDir: string,
 ): string | null {
   const prev = prevMeaningful(tokens, idx);
   const prev2 = prev ? prevMeaningful(tokens, tokens.indexOf(prev)) : null;
@@ -341,10 +355,21 @@ function importSpecifier(
   if (lang !== "ts" && lang !== "js" && lang !== "python") return null;
 
   if (value.startsWith(".") || value.startsWith("/") || value.startsWith("~/") || value.startsWith("@/")) {
-    const cleaned = value.replace(/^(?:\.\/|~\/|@\/)/, "");
-    return opts.map.pathPseudonym(cleaned);
+    return opts.map.pathPseudonym(resolveRelative(fromDir, value));
   }
   return value; // public package name
+}
+
+/** Collapse `../` so a relative import lands on the file it actually names. */
+function resolveRelative(fromDir: string, spec: string): string {
+  const cleaned = spec.replace(/^(?:~\/|@\/)/, "").replace(/^\//, "");
+  const base = spec.startsWith(".") ? fromDir.split("/").filter(Boolean) : [];
+  for (const part of cleaned.split("/")) {
+    if (part === "." || part === "") continue;
+    if (part === "..") base.pop();
+    else base.push(part);
+  }
+  return base.join("/");
 }
 
 const IDENT_LITERAL = /^[A-Za-z_][A-Za-z0-9_]{1,63}$/;
@@ -356,7 +381,22 @@ const DOTTED_IDENT = /^[A-Za-z_][A-Za-z0-9_]*(?:\.[A-Za-z_][A-Za-z0-9_]*)+$/;
  * including inside string literals. `users.ghana_card_number` → `tbl_4.col_9`,
  * consistently with the schema file that declared them.
  */
-function symbolLiteral(value: string, lang: Lang, opts: RedactOptions): string | null {
+function literalKind(tokens: Token[], idx: number): SymbolKind {
+  // `.from("users")`, `.table("users")` name a table; everything else defaults
+  // to a column, which is the common case for `.select("email")`.
+  const open = prevMeaningful(tokens, idx);
+  if (open?.value !== "(") return "col";
+  const callee = prevMeaningful(tokens, tokens.indexOf(open));
+  if (callee && /^(?:from|table|into|update|insert|collection|model)$/i.test(callee.value)) return "tbl";
+  return "col";
+}
+
+function symbolLiteral(
+  value: string,
+  lang: Lang,
+  opts: RedactOptions,
+  defaultKind: SymbolKind = "col",
+): string | null {
   const v = value.trim();
   if (!v || v.length > 200) return null;
 
@@ -365,7 +405,7 @@ function symbolLiteral(value: string, lang: Lang, opts: RedactOptions): string |
 
   if (IDENT_LITERAL.test(v)) {
     if (isAllowed(v, lang, opts.deps)) return null; // let the placeholder path handle it
-    return mapOne(v, "col");
+    return mapOne(v, defaultKind);
   }
   if (DOTTED_IDENT.test(v)) {
     const parts = v.split(".");

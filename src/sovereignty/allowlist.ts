@@ -13,7 +13,8 @@ const JS_GLOBALS = list(`
   Array ArrayBuffer Boolean BigInt Buffer Date Error EvalError Function Infinity Intl JSON
   Map Math NaN Number Object Promise Proxy RangeError ReferenceError Reflect RegExp Set
   String Symbol SyntaxError TypeError URIError Uint8Array WeakMap WeakSet globalThis
-  console process module exports require global window document navigator localStorage
+  console log info warn error debug trace table group groupEnd time timeEnd count assert dir
+  process module exports require global window document navigator localStorage
   sessionStorage fetch Request Response Headers URL URLSearchParams FormData Blob File
   AbortController AbortSignal TextEncoder TextDecoder setTimeout setInterval clearTimeout
   clearInterval queueMicrotask structuredClone crypto atob btoa parseInt parseFloat

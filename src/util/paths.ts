@@ -64,6 +64,12 @@ export function writeOut(file: string, content: string): void {
   writeFileSync(file, content, "utf8");
 }
 
+/** Read a file as raw bytes. Bun and Node disagree about Buffer's type identity. */
+export function readBytes(file: string): Uint8Array {
+  const b = readFileSync(file);
+  return new Uint8Array(b.buffer, b.byteOffset, b.byteLength);
+}
+
 export function readJson<T>(file: string, fallback: T): T {
   if (!existsSync(file)) return fallback;
   try {

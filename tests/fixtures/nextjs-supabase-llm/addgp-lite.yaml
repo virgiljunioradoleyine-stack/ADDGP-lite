@@ -1,0 +1,33 @@
+version: 1
+project:
+  name: kwame-health-chat
+  profile: student
+  description_file: .addgp/description.md
+regions: [gh, eu]
+sectors: [health]
+frameworks: [owasp-llm-top10]
+data_residency:
+  users_in: [gh]
+  data_stored_in: [eu]
+models:
+  research: { provider: openrouter, id: perplexity/sonar-pro }
+  security: { provider: openrouter, id: openai/gpt-4o }
+  architect: { provider: openrouter, id: anthropic/claude-sonnet-4.5 }
+sovereignty:
+  level: 1
+  keep_comments: false
+  tokenise_terms: []
+  never_send: []
+  verbatim_allowlist: []
+budget:
+  per_run_usd: { research: 5, security: 8, architect: 8 }
+  on_exceed: stop
+scan:
+  include: ["**/*"]
+  exclude: ["**/node_modules/**"]
+  max_file_kb: 512
+cache:
+  ttl_days: { corpus: 30, evidence: 7, adversary: 7 }
+ci:
+  fail_on: critical
+  baseline: .addgp/baseline.json

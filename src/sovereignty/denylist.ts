@@ -37,6 +37,7 @@ export const NEVER_SEND_DEFAULT: readonly string[] = [
   "**/*.so", "**/*.dylib", "**/*.dll", "**/*.exe", "**/*.wasm", "**/*.class", "**/*.jar",
   "**/node_modules/**", "**/vendor/**", "**/.git/**", "**/dist/**", "**/build/**",
   "**/.addgp/**", "**/coverage/**", "**/*.min.js", "**/*.min.css", "**/*.map",
+  "addgp-lite.yaml", "**/addgp-lite.yaml",
 ];
 
 export type DenyReason =
@@ -70,7 +71,7 @@ const REASON_TABLE: { globs: string[]; reason: DenyReason; explanation: string }
   { globs: ["**/*.ipynb"], reason: "notebook_output", explanation: "notebook outputs contain real rows" },
   { globs: ["**/*.csv", "**/*.tsv", "**/*.parquet", "**/*.avro", "**/*.orc", "**/*.feather", "**/*.xls", "**/*.xlsx", "**/*.ods", "**/*.dta", "**/*.sav", "**/*.sqlite", "**/*.sqlite3", "**/*.db", "**/*.mdb", "**/*.rdb", "**/dump.sql", "**/*.dump", "**/*.bak", "**/*.ndjson", "**/*.jsonl", "**/fixtures/**", "**/__fixtures__/**", "**/testdata/**", "**/test-data/**", "**/seeds/**", "**/seed/**", "**/*.seed.*", "**/factories/**", "**/sample_data/**", "**/sample-data/**"],
     reason: "data_file", explanation: "no customer or user data is ever sent, in any form, at any level" },
-  { globs: ["**/.addgp/**"], reason: "state_directory", explanation: "local state, including the pseudonym map" },
+  { globs: ["**/.addgp/**", "addgp-lite.yaml", "**/addgp-lite.yaml"], reason: "state_directory", explanation: "this tool's own configuration and local state, including the pseudonym map" },
 ];
 
 /**
