@@ -29,7 +29,7 @@ chmod +x addgp-lite
 > lawful, and sovereign — eliminating the administrative debt that stops African
 > institutions from growing.**
 >
-> — [ViradoTech](https://github.com/virgiljunioradoleyine-stack), who maintain this
+> — [ViradoTech](https://www.viradotech.com/), who maintain this
 
 ADDGP-Lite is free, MIT licensed, and open source. There is no paid tier, no account, no
 licence key, and no plan for any of them.
@@ -450,7 +450,7 @@ counts only: no code, no file paths, no finding text, no repository name, no ide
 It prints the file in full before writing it, and what you do with it is entirely your
 decision.
 
-Maintained by **[ViradoTech](https://github.com/virgiljunioradoleyine-stack)**.
+Maintained by **[ViradoTech](https://www.viradotech.com/)**.
 
 ---
 
