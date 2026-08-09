@@ -29,6 +29,14 @@ Monetary figures are never stated without a citation to a primary source, and ra
 used rather than point estimates, because a precise-looking number carries a confidence
 that no automated system has earned.
 
+**What to actually do with the output.** Take the `compliance/prompts/` folder to a coding
+agent — each prompt is ready to paste, with the obligation text and citation attached so
+the agent understands the constraint, not just the instruction. Take `compliance/LEDGER.md`
+and the citations in `compliance/REPORT.md` to your lawyer — every claim resolves to a
+primary source they can check in minutes instead of researching from nothing. The tool did
+the retrieval and the first pass; the judgment calls — what a court would actually do, what
+risk your organisation is willing to carry — stay with the humans in both of those rooms.
+
 ---
 
 The licence terms for this software are in [LICENSE](LICENSE) and are separate from this

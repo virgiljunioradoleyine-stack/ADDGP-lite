@@ -168,7 +168,31 @@ Sending unredacted code is a **compile error** — see
 
 ## Install
 
-### The zero-ceremony path
+### Download the binary
+
+```bash
+# macOS, Apple Silicon
+curl -L -o addgp-lite https://github.com/virgiljunioradoleyine-stack/ADDGP-lite/releases/download/v1.0.0/addgp-lite-1.0.0-darwin-arm64
+
+# macOS, Intel
+curl -L -o addgp-lite https://github.com/virgiljunioradoleyine-stack/ADDGP-lite/releases/download/v1.0.0/addgp-lite-1.0.0-darwin-x64
+
+# Linux, x64
+curl -L -o addgp-lite https://github.com/virgiljunioradoleyine-stack/ADDGP-lite/releases/download/v1.0.0/addgp-lite-1.0.0-linux-x64
+
+# Linux, arm64
+curl -L -o addgp-lite https://github.com/virgiljunioradoleyine-stack/ADDGP-lite/releases/download/v1.0.0/addgp-lite-1.0.0-linux-arm64
+```
+
+Windows: download `addgp-lite-1.0.0-windows-x64.exe` from the
+[Releases page](https://github.com/virgiljunioradoleyine-stack/ADDGP-lite/releases) — there's no
+`curl`-friendly one-liner that's honest about Windows' quirks, so just click it.
+
+Check the [Releases page](https://github.com/virgiljunioradoleyine-stack/ADDGP-lite/releases) for
+the current version — these commands pin `v1.0.0` and will need that number updated once a newer
+one ships.
+
+### Then
 
 ```bash
 chmod +x addgp-lite
@@ -362,12 +386,26 @@ require TypeScript.
 
 ## Cost
 
-You pay OpenRouter directly. ADDGP-Lite takes nothing and adds no margin.
+**The local engine costs $0.00.** `init`, `doctor --local`, and phase 3 — the evidence
+scan that finds privileged keys, missing row-level security, and personal data reaching
+log sinks — run entirely offline, no key, no network, no charge.
+
+**A full audit requires an OpenRouter key.** Phases 1, 2, 4 and 5 — retrieving the actual
+law, the adversarial review, the citation-checked gap report — call models, and that costs
+whatever OpenRouter charges for the models you pick. You pay OpenRouter directly; ADDGP-Lite
+takes nothing and adds no margin.
 
 One key covers all three model seats — you sign up once instead of opening three billing
-accounts. `scan --dry-run` projects the spend before anything is called, budgets are
-capped per seat in your config, and OpenRouter reports the real cost of every call, so the
-ROI report states what you were actually charged rather than an estimate.
+accounts. `scan --dry-run` projects the spend **for your own repository** before anything
+is called, so you see a real number sized to what you're actually scanning rather than a
+generic marketing figure. Budgets are capped per seat in your config, and OpenRouter
+reports the real cost of every call, so the ROI report states what you were actually
+charged.
+
+**Student?** Set `project.profile: student` in `addgp-lite.yaml` — labour is valued at
+zero and ROI is reported purely in hours, not currency. Run `scan --dry-run` first; a
+typical student-sized repo is a handful of files, and the projection will tell you the
+actual number before you spend anything, rather than trust a figure printed in a README.
 
 **The honest trade-off:** OpenRouter proxies to an upstream provider, so two parties see
 each redacted payload rather than one. What reaches either is still only what the redactor
