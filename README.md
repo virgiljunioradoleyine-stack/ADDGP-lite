@@ -188,6 +188,13 @@ Windows: download `addgp-lite-1.0.0-windows-x64.exe` from the
 [Releases page](https://github.com/virgiljunioradoleyine-stack/ADDGP-lite/releases) — there's no
 `curl`-friendly one-liner that's honest about Windows' quirks, so just click it.
 
+**Expect SmartScreen or Defender to flag the `.exe`.** The binary isn't code-signed yet, and
+an unsigned executable built by compiling a JS runtime into one file is a well-known
+false-positive shape for Windows AV heuristics — it is not evidence of tampering. Verify the
+file's SHA-256 against `SHA256SUMS` before you trust it either way; see the [release
+notes](docs/release-notes/v1.0.0.md#known-gaps) for what's actually going on and what would
+fix it.
+
 Check the [Releases page](https://github.com/virgiljunioradoleyine-stack/ADDGP-lite/releases) for
 the current version — these commands pin `v1.0.0` and will need that number updated once a newer
 one ships.

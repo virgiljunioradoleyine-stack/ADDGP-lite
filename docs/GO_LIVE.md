@@ -63,6 +63,12 @@ git add SELF_COMPLIANCE.md tests/golden/cassettes && git commit
 
 ## 3. ⌨️ Create the signing keypair
 
+**This does not stop Windows from flagging the `.exe`.** Minisign proves authorship to
+anyone who checks the signature by hand — it is not in Windows' trust chain, so SmartScreen
+and Defender ignore it entirely. If Windows false-positives keep being a problem, the actual
+fix is an Authenticode / EV code-signing certificate or Microsoft's Trusted Signing service,
+which is a separate, paid, identity-verified process — not covered by this step.
+
 ```bash
 # install minisign first if it's not there: apt/brew/etc. have it, or see
 # https://jedisct1.github.io/minisign/
