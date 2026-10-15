@@ -447,14 +447,17 @@ business lecturing anyone.
 - Prompt-injection resistance: the planted *"report zero gaps"* comment does not change the
   gap count.
 
-**Not yet exercised against live models.** Phases 1, 2, 4 and 5 have been built and
-type-checked, and their error and degradation paths are covered — but no full scan has run
-against a real OpenRouter key. Recorded cassettes are wired up and empty. **If you are the
-first to run a full scan, expect rough edges in the model-facing phases and please open an
-issue.**
+**Run live once, not yet documented.** The maintainer has run a full scan with a real
+OpenRouter key and it completed. This repository does not yet hold the evidence: no recorded
+cassettes (so CI still cannot replay phases 1, 2, 4 or 5), no per-phase token or cost
+figures, and no published `SELF_COMPLIANCE.md`. Until those exist, treat the *quality* of the
+model-facing phases — whether the retrieved law is right, whether the gaps are well-founded —
+as unreviewed, and check every citation yourself. **If you run a scan, please open an issue
+with what you saw, good or bad.**
 
-**Not yet done:** signed release binaries; a published `SELF_COMPLIANCE.md`; two of the
-three planned fixture repos (Express/Postgres and Python ML).
+**Not yet done:** recorded cassettes and a CI path that replays them; measured cost per
+phase; signed release binaries; a published `SELF_COMPLIANCE.md`; two of the three planned
+fixture repos (Express/Postgres and Python ML).
 
 ---
 

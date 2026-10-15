@@ -143,12 +143,15 @@ lecturing anyone about transparency.
   gaps"* comment does not change the gap count. It gets reported as a finding, which is
   what it is.
 
-**Not yet proven:** the four model-facing phases have been built and type-checked, but a
-full scan has not yet run against a live API key. **If you are among the first to run one,
-expect rough edges and please open an issue** — that feedback is worth more to us right now
+**Run live once, not yet documented:** the maintainer has run a full scan with a real
+OpenRouter key and it completed — but the evidence is not in the repository yet (no recorded
+cassettes, no measured cost per phase, no published self-audit). Treat the quality of the
+model-facing phases as unreviewed and check every citation yourself. **If you run one,
+please open an issue with what you saw** — that feedback is worth more to us right now
 than anything else.
 
-**Not yet done:** signed release binaries, a published self-audit, two more fixture repos.
+**Not yet done:** recorded cassettes, measured cost per phase, signed release binaries, a
+published self-audit, two more fixture repos.
 
 131 tests pass. 12 region packs and 4 frameworks ship in the binary.
 
