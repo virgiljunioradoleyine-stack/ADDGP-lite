@@ -1,6 +1,6 @@
 {
   "name": "addgp-lite",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "BYOK compliance CLI - local, sovereign, zero-margin",
   "private": true,
   "type": "module",

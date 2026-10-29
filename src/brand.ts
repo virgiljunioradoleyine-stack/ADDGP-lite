@@ -5,7 +5,7 @@ export const BRAND = {
   name: "addgp-lite",
   display: "ADDGP-Lite",
   long: "African Data Governance Platform — Lite",
-  version: "1.0.0",
+  version: "1.1.0",
   tagline: "Your code, your keys, your data, your report.",
   configFile: "addgp-lite.yaml",
   stateDir: ".addgp",
