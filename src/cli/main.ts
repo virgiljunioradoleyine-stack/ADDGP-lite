@@ -12,6 +12,7 @@ import {
   cmdScan, cmdSovereignty, cmdGaps, cmdPrompt, cmdFix, cmdLedger, cmdRoi,
   cmdReport, cmdDiff, cmdCi, cmdWatch, cmdExport, cmdShare, cmdSelfcheck, cmdStress,
 } from "./commands/analyse.ts";
+import { cmdUi } from "./commands/ui.ts";
 
 type Handler = (args: ReturnType<typeof parseArgs>) => Promise<number>;
 
@@ -20,6 +21,7 @@ const COMMANDS: Record<string, { run: Handler; summary: string; usage?: string }
   doctor: { run: cmdDoctor, summary: "Validate key, model ids, budgets, git repo, disk, pack freshness", usage: "doctor [--local] [--privacy]" },
   verify: { run: cmdVerify, summary: "Print this binary's own hash and signature status" },
   scan: { run: cmdScan, summary: "Full run", usage: "scan [--phases 0,1,2,3,4,5,6] [--resume <run-id>] [--since <git-ref>] [--offline] [--dry-run] [--sovereignty 0|1|2] [--format md,html,pdf,json,sarif] [--force]" },
+  ui: { run: cmdUi, summary: "Open the local browser UI (127.0.0.1 only, read-only)", usage: "ui [--port 7417] [--no-open]" },
   sovereignty: { run: cmdSovereignty, summary: "What would leave this machine, and what already has", usage: "sovereignty preview|map|ledger|level <0|1|2>" },
   regions: { run: cmdRegions, summary: "Region and framework packs", usage: "regions list|add <id>|remove <id>|describe <id>" },
   gaps: { run: cmdGaps, summary: "Browse gaps", usage: "gaps [<id>] [--severity high] [--regime eu] [--open] [--json]" },
@@ -50,7 +52,7 @@ function usage(): void {
 
   const groups: [string, string[]][] = [
     ["Setup", ["init", "doctor", "keys", "regions", "verify"]],
-    ["Audit", ["scan", "sovereignty", "gaps", "prompt", "fix"]],
+    ["Audit", ["scan", "ui", "sovereignty", "gaps", "prompt", "fix"]],
     ["Reports", ["report", "ledger", "roi", "export", "share"]],
     ["Ongoing", ["ci", "diff", "watch", "selfcheck", "stress", "cache", "cost"]],
   ];

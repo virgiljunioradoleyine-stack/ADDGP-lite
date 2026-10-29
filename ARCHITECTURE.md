@@ -200,7 +200,7 @@ passes **that sentence** — not the name — to phase 4.
 ```
 src/
 ├── brand.ts              the only place the name and steward appear
-├── cli/                  argument parsing, terminal rendering, 22 commands
+├── cli/                  argument parsing, terminal rendering, 23 commands
 ├── config/               zod-validated addgp-lite.yaml
 ├── keys/                 OS keychain adapters + scrypt/AES-256-GCM fallback
 │

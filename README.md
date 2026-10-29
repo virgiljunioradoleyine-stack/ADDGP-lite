@@ -12,7 +12,7 @@ an ROI report.
 [![MIT](https://img.shields.io/badge/licence-MIT-blue)](LICENSE)
 [![No telemetry](https://img.shields.io/badge/telemetry-none-brightgreen)](#no-phone-home-ever)
 [![Regions](https://img.shields.io/badge/regions-12%20%2B%204%20frameworks-orange)](#regions)
-[![Tests](https://img.shields.io/badge/tests-131%20passing-brightgreen)](#testing)
+[![Tests](https://img.shields.io/badge/tests-141%20passing-brightgreen)](#testing)
 
 ```bash
 chmod +x addgp-lite
@@ -256,6 +256,30 @@ addgp-lite scan --dry-run           # projected spend, before anything is called
 addgp-lite scan                     # the full run
 ```
 
+### Or use the browser
+
+```bash
+addgp-lite ui                       # opens a local page in your browser
+```
+
+The same results, the same local findings and the same redaction preview, in a page you
+can click through: filter gaps by severity, read the What / Why / How / Consequence, and
+copy each gap's agent prompt with one key (`c`). It is served from the binary itself on
+`127.0.0.1` only, loads nothing from the internet, never calls a model and never writes to
+your project. The link it prints carries a one-time token, so other sites and other users
+on the machine cannot read it.
+
+Before your first scan it still shows something useful: the free local findings and
+exactly what would leave the machine.
+
+![The local UI: overview before a first scan](docs/images/ui-overview.png)
+
+![What would leave this machine, per file, after redaction](docs/images/ui-what-leaves.png)
+
+![Free local findings, computed on the machine with no key](docs/images/ui-local-findings.png)
+
+*Screenshots of the real UI running against the fixture repository in `tests/fixtures/`.*
+
 ### Reading the results
 
 ```bash
@@ -277,7 +301,7 @@ addgp-lite watch                    # alert when a cited law changes
 addgp-lite selfcheck                # run ADDGP-Lite against ADDGP-Lite
 ```
 
-`addgp-lite --help` lists all 22 commands.
+`addgp-lite --help` lists all 23 commands.
 
 ### Offline and low bandwidth
 
