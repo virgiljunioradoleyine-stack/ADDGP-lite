@@ -11,4 +11,5 @@ Newest entry first. Written by each build session before it ends. See the "Sessi
 - Open bugs and risks: v1.1.0 draft release predates the fixes and must not be published. No Emirates ID detector. Description sent un-pseudonymised by design. Binaries unsigned.
 - Decisions needed from the founder: delete the v1.1.0 draft on the Releases page; approve cutting 1.1.1 via Actions → Release → 1.1.1.
 - Next step: release 1.1.1; add an Emirates ID pattern; record cassettes from a real run.
+- Coordinator message: not sent. No send_message tool was available in this session; this file is the record.
 
