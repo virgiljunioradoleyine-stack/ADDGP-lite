@@ -141,6 +141,27 @@ export function isPrimarySource(url: string, allowlist: ReadonlySet<string>): bo
   return false;
 }
 
+/**
+ * The only non-model request this tool makes: a plain GET of a page the report
+ * cites, to check that a claimed quote really appears there. The URL comes from
+ * model output, so it is never trusted on its own: it must be https on the default
+ * port, carry no credentials, and name a host that is an official authority for the
+ * region or a recognised legal publisher. That rules out internal hosts, IP
+ * literals and anything a prompt-injected citation might point at.
+ */
+export function isCitationFetchAllowed(url: string, allowlist: ReadonlySet<string>): boolean {
+  let u: { protocol: string; username: string; password: string; port: string };
+  try {
+    u = new URL(url);
+  } catch {
+    return false;
+  }
+  if (u.protocol !== "https:") return false;
+  if (u.username || u.password) return false;
+  if (u.port && u.port !== "443") return false;
+  return isPrimarySource(url, allowlist);
+}
+
 /** The facets phase 2 plans queries over (§6.2). */
 export const FACETS: { id: string; description: string }[] = [
   { id: "personal_data", description: "processing of personal data generally: principles, lawful bases, transparency" },

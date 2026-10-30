@@ -58,8 +58,8 @@ export async function runAdversary(opts: AdversaryOptions): Promise<AdversaryRes
   const findings: AdversaryFinding[] = [];
   let counter = 0;
 
-  const evidenceSummary = summariseEvidence(evidence);
-  const profileText = JSON.stringify(
+  const evidenceSummary = summariseEvidence(evidence, (p) => opts.sov.sealPath(p));
+  const profileText = opts.sov.resealText(JSON.stringify(
     {
       summary: profile.summary,
       roles: profile.roles,
@@ -71,7 +71,7 @@ export async function runAdversary(opts: AdversaryOptions): Promise<AdversaryRes
     },
     null,
     2,
-  );
+  ));
 
   for (const [i, batch] of batches.entries()) {
     const { system, user, version } = renderPrompt("04-adversary", {

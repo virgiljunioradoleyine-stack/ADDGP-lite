@@ -8,7 +8,7 @@ import { gitRemotes } from "../util/git.ts";
 import { denyCheck, type DenyVerdict } from "./denylist.ts";
 import { PseudonymMap } from "./pseudonym.ts";
 import { redactFile, type Level, type RedactedFile } from "./redactor.ts";
-import { rehydrate, rehydrateDeep } from "./rehydrate.ts";
+import { rehydrate, rehydrateDeep, reseal } from "./rehydrate.ts";
 import { sealPayload, renderFileBundle, type SealedMessage, type SealedPayload } from "./seal.ts";
 import { findSecrets, type DetectorHit } from "./secrets.ts";
 
@@ -74,6 +74,11 @@ export class Sovereignty {
     const allow = this.cfg.sovereignty.verbatim_allowlist;
     if (!allow.length) return 1;
     return matchAny(path, allow) ? 2 : 1;
+  }
+
+  /** The form a repository path takes in any payload: pseudonymised unless level 2 allowlists it. */
+  sealPath(path: string): string {
+    return this.levelFor(path) === 2 ? path : this.map.pathPseudonym(path);
   }
 
   check(path: string): DenyVerdict {
@@ -188,6 +193,11 @@ export class Sovereignty {
 
   rehydrate<T>(value: T): T {
     return rehydrateDeep(value, this.map);
+  }
+
+  /** Pseudonymise any real name in text that is about to be sent again. */
+  resealText(text: string): string {
+    return reseal(text, this.map);
   }
 
   rehydrateText(text: string): string {

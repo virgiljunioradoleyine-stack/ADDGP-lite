@@ -39,7 +39,7 @@ export async function runProfile(opts: ProfileOptions): Promise<ProfileResult> {
   const { cfg, paths, sov, providers, evidence } = opts;
 
   const description = readDescription(cfg, paths);
-  const localFacts = summariseEvidence(evidence);
+  const localFacts = summariseEvidence(evidence, (p) => sov.sealPath(p));
   const regions = cfg.regions
     .map((id) => {
       try {
@@ -137,7 +137,13 @@ function readDescription(cfg: Config, paths: Paths): string {
  * The conclusions phase 3 reached, expressed as facts — never as quoted code.
  * This is the §5.6 architectural trick made concrete.
  */
-export function summariseEvidence(e: EvidenceBundle): string {
+/**
+ * The local-findings summary sent to phases 1, 4 and 5. It carries conclusions,
+ * never quotations or symbol names, and file paths go out in the same pseudonymised
+ * form the code bundle uses, so a reader of the payload cannot learn the
+ * repository's layout from it. `sealPath` is supplied by the caller's Sovereignty.
+ */
+export function summariseEvidence(e: EvidenceBundle, sealPath: (path: string) => string = (p) => p): string {
   const lines: string[] = [];
   lines.push(`Files scanned: ${e.file_count} (${e.loc} lines)`);
   lines.push(`Languages: ${Object.entries(e.languages).map(([l, n]) => `${l} (${n} lines)`).join(", ") || "none detected"}`);
@@ -161,7 +167,8 @@ export function summariseEvidence(e: EvidenceBundle): string {
     if (!items?.length) continue;
     lines.push(`## ${kind} (${items.length})`);
     for (const f of items.slice(0, 40)) {
-      lines.push(`- [${f.id}] ${f.severity.toUpperCase()} ${f.file}:${f.line} — ${f.conclusion}`);
+      const where = f.file.startsWith("(") ? f.file : sealPath(f.file);
+      lines.push(`- [${f.id}] ${f.severity.toUpperCase()} ${where}:${f.line} — ${f.conclusion}`);
     }
     if (items.length > 40) lines.push(`- …and ${items.length - 40} more of this kind`);
     lines.push("");

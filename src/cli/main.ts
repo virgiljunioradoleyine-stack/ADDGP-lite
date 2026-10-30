@@ -81,7 +81,7 @@ function usage(): void {
   log.raw(`  ${color.bold("Sovereignty")}`);
   log.raw(`    ${color.gray(`Your code never leaves in readable form. Run \`${BRAND.name} sovereignty preview\``)}`);
   log.raw(`    ${color.gray(`to see exactly what would be sent, per file, before anything is called.`)}`);
-  log.raw(`    ${color.gray(`Only ${PINNED_HOSTS.join(", ")} is ever contacted; every other host is blocked.`)}`);
+  log.raw(`    ${color.gray(`Model calls go only to ${PINNED_HOSTS.join(", ")}; every other host is blocked.`)}`);
   log.raw("");
   log.raw(disclaimerLine());
   log.raw("");

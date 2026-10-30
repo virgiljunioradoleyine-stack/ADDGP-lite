@@ -69,7 +69,9 @@ You do not have to take our word for any of this. That is the design.
 
 - No telemetry, no analytics, no licence check, no version ping. Not opt-out — absent.
 - Keys in the OS keychain, or a scrypt + AES-256-GCM file at mode 0600.
-- One pinned hostname; everything else blocked at the gate.
+- One pinned hostname for model calls; everything else blocked at the gate. The only other
+  request is phase 2's quote check: a body-less GET, https only, restricted to official
+  legal-source domains, logged in the egress ledger.
 - No `eval`, no dynamic require, no unsanitised shell-out.
 - Dependencies audited in CI on every change; SBOM published with each release.
 - `addgp-lite selfcheck` runs the tool against its own source. Every release ships

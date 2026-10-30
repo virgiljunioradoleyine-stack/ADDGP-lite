@@ -45,6 +45,30 @@ function replaceTokenwise(haystack: string, needle: string, replacement: string)
   }
 }
 
+/**
+ * The inverse of rehydrate, for text that is about to leave again. Model output is
+ * rehydrated as soon as it arrives so the user reads real names; when part of it is
+ * then fed into a later prompt (the profile into phase 4, adversary findings into
+ * phase 5) every real name the map knows must go back to its pseudonym, or the
+ * second call would carry what the first one never saw. Longest name first, whole
+ * tokens only. Names under three characters are left alone: they identify nothing
+ * and would otherwise shred ordinary prose.
+ */
+export function reseal(text: string, map: PseudonymMap): string {
+  if (!text) return text;
+  const byReal = new Map<string, string>();
+  for (const { pseudonym, real } of map.entries()) {
+    if (real.length < 3 || real === pseudonym || byReal.has(real)) continue;
+    byReal.set(real, pseudonym);
+  }
+  let out = text;
+  for (const real of [...byReal.keys()].sort((a, b) => b.length - a.length)) {
+    if (!out.includes(real)) continue;
+    out = replaceTokenwise(out, real, byReal.get(real)!);
+  }
+  return out;
+}
+
 /** Deep-rehydrate every string in a structure returned by a model. */
 export function rehydrateDeep<T>(value: T, map: PseudonymMap): T {
   const walk = (v: unknown): unknown => {

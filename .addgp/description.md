@@ -35,8 +35,10 @@ The operator's machine, wherever that is. The project targets developers and
 students in Ghana and Nigeria first, so it is built to work on a connection that
 drops and with the network entirely off for everything except model calls.
 
-The only outbound destination is `openrouter.ai`, pinned at the egress gate;
-every other host is blocked. OpenRouter routes each request to an upstream model
+Model calls go only to `openrouter.ai`, pinned at the egress gate; every other
+host is blocked. The one other outbound request is phase 2's quote check: a
+body-less GET of a cited law page, restricted to official legal-source domains
+over https and logged in the egress ledger. OpenRouter routes each request to an upstream model
 provider, which means two parties see each redacted payload.
 
 ## Third parties and AI

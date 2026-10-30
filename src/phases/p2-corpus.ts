@@ -6,9 +6,13 @@ import { renderPrompt } from "../util/prompts.ts";
 import type { Sovereignty } from "../sovereignty/index.ts";
 import { extractJson, ProviderSkipped, type Providers } from "../providers/index.ts";
 import {
-  FACETS, authorityAllowlist, facetById, getPack, hasPack, isPrimarySource,
-  type Pack,
+  FACETS, authorityAllowlist, facetById, getPack, hasPack, hostOf, isCitationFetchAllowed,
+  isPrimarySource, type Pack,
 } from "../regions/index.ts";
+import { appendJsonl } from "../util/paths.ts";
+import { sha256 } from "../util/hash.ts";
+import { cassetteMode } from "../providers/cassette.ts";
+import type { EgressRecord } from "../sovereignty/gate.ts";
 import {
   ObligationSchema, type Citation, type ExcludedObligation, type Obligation,
   type ProjectProfile,
@@ -272,7 +276,7 @@ export async function runCorpus(opts: CorpusOptions): Promise<CorpusResult> {
   for (const ob of verified) {
     for (const c of ob.citations) {
       if (!c.quote) continue;
-      const quoteOk = await checkQuote(opts, c);
+      const quoteOk = await checkQuote(opts, c, authorityAllowlist([ob.region]));
       c.quote_verified = quoteOk;
       if (quoteOk === false) {
         ob.confidence = Math.max(0, ob.confidence - 0.2);
@@ -307,7 +311,7 @@ async function retrieveFacet(
     AUTHORITIES: [...allowlist].join(", "),
     FACET: item.facet,
     FACET_DESCRIPTION: item.reason || facet.description,
-    PROFILE_FACTS: profileFacts(opts.profile),
+    PROFILE_FACTS: opts.sov.resealText(profileFacts(opts.profile)),
   });
 
   const payload = opts.sov.sealText(
@@ -437,15 +441,51 @@ async function verifyObligation(opts: CorpusOptions, ob: Obligation): Promise<Ve
  * §6.2 rule 4 — fetch the cited page and string-check the claimed quote.
  * Deliberately best-effort: a failure to fetch is not a failure of the quote,
  * and the distinction is preserved (undefined vs false).
+ *
+ * This is the one request that does not go to the pinned model host, so it is
+ * fenced: only https pages on the region's official authorities or a recognised
+ * legal publisher, one redirect at most and only to another allowed host, nothing
+ * sent but the URL, never in --offline or cassette replay, and every fetch
+ * written to the local egress ledger like any other outbound call.
  */
-async function checkQuote(opts: CorpusOptions, c: Citation): Promise<boolean | undefined> {
-  void opts;
+async function checkQuote(
+  opts: CorpusOptions,
+  c: Citation,
+  allowlist: ReadonlySet<string>,
+): Promise<boolean | undefined> {
   if (!c.quote || c.quote.length < 24) return undefined;
-  try {
-    const res = await fetch(c.url, {
+  if (opts.providers.ctx.offline || cassetteMode() !== "off") return undefined;
+  if (!isCitationFetchAllowed(c.url, allowlist)) return undefined;
+
+  const get = async (url: string): Promise<Response> => {
+    const res = await fetch(url, {
+      method: "GET",
+      redirect: "manual",
       signal: AbortSignal.timeout(12_000),
       headers: { "user-agent": "addgp-lite quote-verification" },
     });
+    appendJsonl(opts.paths.egress, {
+      ts: nowIso(),
+      run_id: opts.providers.ctx.runId,
+      phase: 2,
+      destination: hostOf(url) ?? "unknown",
+      bytes: 0,
+      payload_sha256: sha256(""),
+      sovereignty_level: opts.sov.level,
+      files_represented: [],
+      purpose: `quote-check GET ${url}`,
+    } satisfies EgressRecord);
+    return res;
+  };
+
+  try {
+    let res = await get(c.url);
+    if (res.status >= 300 && res.status < 400) {
+      const next = res.headers.get("location");
+      const target = next ? new URL(next, c.url).toString() : null;
+      if (!target || !isCitationFetchAllowed(target, allowlist)) return undefined;
+      res = await get(target);
+    }
     if (!res.ok) return undefined;
     const html = await res.text();
     const text = html

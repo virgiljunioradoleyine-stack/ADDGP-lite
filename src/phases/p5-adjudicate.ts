@@ -39,15 +39,15 @@ export async function runAdjudicate(opts: AdjudicateOptions): Promise<Adjudicate
   const { cfg, sov, providers, profile, evidence, adversary, obligations } = opts;
 
   const adjudications: Adjudication[] = [];
-  const evidenceSummary = summariseEvidence(evidence);
-  const profileText = JSON.stringify(profile, null, 2);
+  const evidenceSummary = summariseEvidence(evidence, (p) => opts.sov.sealPath(p));
+  const profileText = sov.resealText(JSON.stringify(profile, null, 2));
   const adversaryText = adversary.length
-    ? adversary
+    ? sov.resealText(adversary
         .map(
           (a) =>
             `- ${a.id} [${a.severity}${a.status === "unconfirmed" ? ", UNCONFIRMED" : ""}] ${a.category}: ${a.title} @ ${a.location}\n  impact: ${a.impact}`,
         )
-        .join("\n")
+        .join("\n"))
     : "(phase 4 produced no findings, or was skipped — treat security posture as unassessed rather than clean)";
 
   for (let i = 0; i < obligations.length; i += OBLIGATIONS_PER_CALL) {
@@ -198,12 +198,12 @@ async function buildGap(
 
   const { system, user, version } = renderPrompt("05-gap", {
     OBLIGATION: renderObligation(ob) + `\nCitations: ${ob.citations.map((c) => c.url).join(", ")}`,
-    ADJUDICATION: `Status: ${adj.status}\nRationale: ${adj.rationale}\nConfidence: ${adj.confidence}`,
+    ADJUDICATION: opts.sov.resealText(`Status: ${adj.status}\nRationale: ${adj.rationale}\nConfidence: ${adj.confidence}`),
     EVIDENCE: evidenceSummary,
     ADVERSARY: related.length
-      ? related.map((a) => `- ${a.id} [${a.severity}] ${a.title}: ${a.impact}`).join("\n")
+      ? opts.sov.resealText(related.map((a) => `- ${a.id} [${a.severity}] ${a.title}: ${a.impact}`).join("\n"))
       : "(none linked)",
-    PROFILE: opts.profile.summary,
+    PROFILE: opts.sov.resealText(opts.profile.summary),
   });
 
   const payload = opts.sov.sealText(

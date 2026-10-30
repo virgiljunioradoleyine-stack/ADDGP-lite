@@ -2,8 +2,8 @@
 // Produced by scripts/embed.ts from packs/, prompts/ and data/.
 // Run `bun run embed` after changing any of those.
 
-export const EMBED_VERSION = "1.0.0";
-export const EMBED_BUILT_AT = "2026-08-07";
+export const EMBED_VERSION = "1.1.1";
+export const EMBED_BUILT_AT = "2026-10-30";
 
 export interface EmbeddedPrompt {
   id: string;

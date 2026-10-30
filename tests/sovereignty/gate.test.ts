@@ -8,6 +8,7 @@ import { denyCheck } from "../../src/sovereignty/denylist.ts";
 import { findForbidden, findSecrets, findPii } from "../../src/sovereignty/secrets.ts";
 import { paths } from "../../src/util/paths.ts";
 import { PINNED_HOSTS } from "../../src/brand.ts";
+import { authorityAllowlist, isCitationFetchAllowed } from "../../src/regions/index.ts";
 
 const p = paths(mkdtempSync(join(tmpdir(), "addgp-gate-")));
 const opts = { paths: p, runId: "test", phase: 4, neverSend: [], record: false as const };
@@ -177,5 +178,30 @@ describe("detectors — false positives kept out of the way", () => {
     expect(findSecrets("aWQ9MTIzNDU2Nzg5/c2VjcmV0S2V5VmFsdWU5OTk=").length).toBeGreaterThan(0);
     expect(findSecrets("https://api.example.com/v1?token=aGVsbG8gd29ybGQgc2VjcmV0IHRva2Vu").length).toBeGreaterThan(0);
     expect(findSecrets("AKIAIOSFODNN7EXAMPLE").length).toBeGreaterThan(0);
+  });
+});
+
+describe("citation quote-check — the only non-model request, fenced", () => {
+  const ae = authorityAllowlist(["ae"]);
+
+  test("an official authority page over https is allowed", () => {
+    expect(isCitationFetchAllowed("https://u.ae/en/about-the-uae", ae)).toBe(true);
+    expect(isCitationFetchAllowed("https://www.difc.ae/business/laws", ae)).toBe(true);
+    expect(isCitationFetchAllowed("https://eur-lex.europa.eu/eli/reg/2016/679/oj", ae)).toBe(true);
+  });
+
+  test("a model-supplied URL cannot reach internal or arbitrary hosts", () => {
+    expect(isCitationFetchAllowed("https://169.254.169.254/latest/meta-data/", ae)).toBe(false);
+    expect(isCitationFetchAllowed("https://localhost/admin", ae)).toBe(false);
+    expect(isCitationFetchAllowed("https://intranet.corp/secret", ae)).toBe(false);
+    expect(isCitationFetchAllowed("https://evil.example.com/u.ae", ae)).toBe(false);
+    expect(isCitationFetchAllowed("https://u.ae.evil.com/", ae)).toBe(false);
+  });
+
+  test("plain http, odd ports and embedded credentials are refused", () => {
+    expect(isCitationFetchAllowed("http://u.ae/", ae)).toBe(false);
+    expect(isCitationFetchAllowed("https://u.ae:8443/", ae)).toBe(false);
+    expect(isCitationFetchAllowed("https://user:pass@u.ae/", ae)).toBe(false);
+    expect(isCitationFetchAllowed("not a url", ae)).toBe(false);
   });
 });
