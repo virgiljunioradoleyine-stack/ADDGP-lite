@@ -72,6 +72,8 @@ decision, not a reasoning one — the seats stay on different model families.
 
 ## The trust boundary
 
+> For a reviewer's view of the same ground — what runs offline, every outbound request, what the models see, and the limits — see [docs/DATA_PRIVACY_AND_GOVERNANCE.md](docs/DATA_PRIVACY_AND_GOVERNANCE.md).
+
 This is the part that matters. Everything above the line stays on your machine forever.
 
 ```mermaid
@@ -151,7 +153,7 @@ Every payload, every time, in this order:
    numbers (Luhn-validated). A hit **aborts the run** with the location. It does not clean
    and continue — because a redactor that silently fixes leaks is a redactor nobody
    audits.
-3. **Host pinning.** Exactly one permitted hostname. Anything else is a bug and is blocked.
+3. **Host pinning.** Model calls go to exactly one permitted hostname. Anything else is a bug and is blocked. Phase 2's quote check is the single exception: a body-less GET of a cited page, allowed only on the region's authority domains or a recognised legal publisher over https (`isCitationFetchAllowed` in `src/regions/index.ts`), skipped in `--offline` and cassette replay, and written to the egress ledger.
 4. **Ledger.** Timestamp, phase, destination, byte count, payload SHA-256, sovereignty
    level, and which *real* files the payload covered — written locally, for you.
 

@@ -153,7 +153,7 @@ than anything else.
 **Not yet done:** recorded cassettes, measured cost per phase, signed release binaries, a
 published self-audit, two more fixture repos.
 
-141 tests pass. 12 region packs and 4 frameworks ship in the binary.
+148 tests pass. 12 region packs and 4 frameworks ship in the binary.
 
 ---
 

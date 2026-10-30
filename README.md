@@ -12,7 +12,7 @@ an ROI report.
 [![MIT](https://img.shields.io/badge/licence-MIT-blue)](LICENSE)
 [![No telemetry](https://img.shields.io/badge/telemetry-none-brightgreen)](#no-phone-home-ever)
 [![Regions](https://img.shields.io/badge/regions-12%20%2B%204%20frameworks-orange)](#regions)
-[![Tests](https://img.shields.io/badge/tests-141%20passing-brightgreen)](#testing)
+[![Tests](https://img.shields.io/badge/tests-148%20passing-brightgreen)](#testing)
 
 ```bash
 chmod +x addgp-lite
@@ -158,7 +158,11 @@ Every payload, every time:
 1. **Deny-list**, re-run against the final serialized payload.
 2. **Secret and PII scan** — keys, tokens, emails, phone numbers, national IDs, card
    numbers. A hit **aborts the run**. It does not clean and continue.
-3. **Host pinning** — exactly one permitted hostname. Anything else is a bug, and blocked.
+3. **Host pinning** — every model call goes to exactly one hostname, `openrouter.ai`.
+   Anything else is a bug, and blocked. The one other request the tool makes is a plain
+   GET of a cited law page, to check a quote — only https, only on the region's official
+   authority domains or a recognised legal publisher, never with any project data, never
+   in `--offline`, and logged in the ledger like every other call.
 4. **Ledger** — timestamp, phase, destination, bytes, payload SHA-256, and which *real*
    files it covered, written locally for you.
 
@@ -510,6 +514,10 @@ If something left the machine that should not have, please report it **privately
 than in a public issue — see [SECURITY.md](SECURITY.md).
 
 ### Architecture
+
+**For a security or data-protection review**, start with
+[docs/DATA_PRIVACY_AND_GOVERNANCE.md](docs/DATA_PRIVACY_AND_GOVERNANCE.md): what runs
+offline, what leaves the machine and where, what the models see, and the limits.
 
 [ARCHITECTURE.md](ARCHITECTURE.md) has the pipeline, the trust boundary, the module map,
 the anti-hallucination protocol, and the design decisions you might disagree with.
